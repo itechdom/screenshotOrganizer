@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, TouchableHighlight, StyleSheet, Image } from 'react-native'
+import { View, Text, TextInput, TouchableHighlight, StyleSheet, Image, ScrollView } from 'react-native'
 import {observer} from 'mobx-react/native'
 import DragDropTest from '../DragDropTest/example';
 //import { Container, Header, Title, Button, Left, Right, Body, Icon } from 'native-base';
@@ -10,16 +10,28 @@ const App = observer(class App extends Component {
     super()
   }
 
+  //<DragDropTest
+  //  folderList={this.props.store.folderList}
+  //  screenshotList={this.props.store.screenshotList}
+  // />
+
   render() {
-    const { imgList } = this.props.store;
-    return (
-      <View style={styles.container}>
+    const { screenshotList } = this.props.store;
+    return <View style={styles.container}>
         <View style={styles.row}>
-            <DragDropTest />
+            {
+              screenshotList.map((screenshot,index)=>
+                <Image
+                  source={{uri:"photos://AF14480A-609E-46BF-B694-653E950DA287/L0/001"}}
+                  style={styles.image}
+                  key={index}
+                />
+              )
+            }
         </View>
       </View>
-    );
   }
+
 })
 
 const styles = StyleSheet.create({
@@ -32,8 +44,8 @@ const styles = StyleSheet.create({
   },
   image: {
     margin: 4,
-    width:50,
-    height:50
+    width:500,
+    height:500
   }
 });
 

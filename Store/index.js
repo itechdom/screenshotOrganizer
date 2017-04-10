@@ -5,11 +5,13 @@ class ScreenshotOrganizerStore {
 
   pendingRequestCount = 0;
 
-  constructor(imgList=[]) {
-    this.imgList = imgList;
+  constructor() {
+    this.screenshotList = [];
+    this.folderList = ["Movies","Stores","Test"];
     extendObservable(this, {
       /* See previous listing */
-      imgList : [],
+      screenshotList : [],
+      folderList:[],
       get filterByDate(){
         return this.expenseList.filter(
           expense =>  expense.date === this.selectedDate
@@ -24,15 +26,31 @@ class ScreenshotOrganizerStore {
         .catch((err)=>{
           console.error(err);
         })
+      }),
+      addFolder:action((folder)=>{
+        this.folderList.push(folder);
+      }),
+      addScreenshotToFolder:action((screenshot,folder)=>{
+        folder.screenshotList.push(folder);
       })
     })
   }
 }
 
-class Photo {
+class Folder{
+  id;
+  screenshotList;
+  title;
+  constructor(title,screenshotList){
+    this.title = title;
+    this.screenshotList = screenshotList;
+  }
+}
+
+class Screenshot {
   id;
   title;
-  constructor(id,title){
+  constructor(title){
     this.id = uuidV4();
     this.title = title;
   }
