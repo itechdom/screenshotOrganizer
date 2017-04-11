@@ -18,17 +18,17 @@ const App = observer(class App extends Component {
   render() {
     const { screenshotList } = this.props.store;
     return <View style={styles.container}>
-        <View style={styles.row}>
+        <ScrollView style={styles.row}>
             {
               screenshotList.map((screenshot,index)=>
                 <Image
-                  source={{uri:"photos://AF14480A-609E-46BF-B694-653E950DA287/L0/001"}}
+                  source={{uri:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`}}
                   style={styles.image}
                   key={index}
                 />
               )
             }
-        </View>
+        </ScrollView>
       </View>
   }
 
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   },
   image: {
     margin: 4,
-    width:500,
-    height:500
+    width:100,
+    height:100
   }
 });
 
