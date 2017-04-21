@@ -7,7 +7,7 @@ class ScreenshotOrganizerStore {
 
   constructor() {
     this.screenshotList = [];
-    this.folderList = ["Movies","Stores","Test"];
+    this.folderList = [new Folder("Movies"),new Folder("Stores"),new Folder("Test")];
     extendObservable(this, {
       /* See previous listing */
       screenshotList : [],
@@ -28,10 +28,10 @@ class ScreenshotOrganizerStore {
         })
       }),
       addFolder:action((folder)=>{
-        this.folderList.push(folder);
+        this.folderList.push(new Folder(folder));
       }),
       addScreenshotToFolder:action((screenshot,folder)=>{
-        folder.screenshotList.push(folder);
+        folder.screenshotList.push(screenshot);
       })
     })
   }
@@ -41,18 +41,9 @@ class Folder{
   id;
   screenshotList;
   title;
-  constructor(title,screenshotList){
+  constructor(title,screenshotList=[]){
     this.title = title;
     this.screenshotList = screenshotList;
-  }
-}
-
-class Screenshot {
-  id;
-  title;
-  constructor(title){
-    this.id = uuidV4();
-    this.title = title;
   }
 }
 

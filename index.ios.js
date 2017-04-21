@@ -54,6 +54,22 @@ class ScreenshotOrganizer extends React.Component {
         }).then((queryResult) => {
           console.log(queryResult);
           const album = queryResult.albums[0];
+          const unsubscribeFunc = album.onChange((changeDetails, update) => {
+            if(changeDetails.hasIncrementalChanges) {
+              //Important! Assets must be supplied in original fetch-order.
+              update(ScreenshotOrganizerStore.screenshotList, (updatedAssetArray) => {
+                ScreenshotOrganizerStore.screenshotList.replace(updatedAssetArray);
+              },
+              //If RNPF needs to retrive more assets to complete the change,
+              //eg. a move happened that moved a previous out of array-index asset into your corrently loaded assets.
+              //Here you can apply a param obj for options on how to load those assets. eg. ´includeMetadata : true´.
+              {
+                includeMetadata : true
+              });
+            }else {
+              //Do full reload here..
+            }
+          });
           return album.getAssets({
             //The fetch-options from the outer query will apply here, if we get
             startIndex: 0,
@@ -112,18 +128,5 @@ class ScreenshotOrganizer extends React.Component {
   }
 
 }
-
-//refine images to fit the uri
-
-//load photos
-CameraRoll.getPhotos({
-  groupTypes:'All',
-  first:5
-}).then((data)=>{
-  data.edges.map((edge)=>{
-    console.log(edge.node.image.uri);
-  })
-});
-
 
 AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizer);
