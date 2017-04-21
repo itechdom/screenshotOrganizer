@@ -6,8 +6,6 @@ class ScreenshotOrganizerStore {
   pendingRequestCount = 0;
 
   constructor() {
-    this.screenshotList = [];
-    this.folderList = [new Folder("Movies"),new Folder("Stores"),new Folder("Test")];
     extendObservable(this, {
       /* See previous listing */
       screenshotList : [],
