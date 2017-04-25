@@ -12,6 +12,7 @@
     "native-base": "^2.1.2",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.2",
+    "react-native-material-design": "^0.3.7",
     "react-native-photo-browser": "^0.3.1",
     "react-native-photos-framework": "^1.0.3",
     "react-native-simple-modal": "^5.0.0",
