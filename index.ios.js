@@ -14,6 +14,10 @@ import {
   AppRegistry,
   Navigator
 } from 'react-native';
+
+
+import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs } from 'native-base';
+
 import RNPhotosFramework from 'react-native-photos-framework';
 
 
@@ -89,41 +93,25 @@ class ScreenshotOrganizer extends React.Component {
 
   }
 
-  renderScene (route, navigator) {
-    return <route.component {...route.passProps} navigator={navigator} />
-  }
-  configureScene (route, routeStack) {
-    if (route.type === 'Modal') {
-      return Navigator.SceneConfigs.FloatFromBottom
-    }
-    return Navigator.SceneConfigs.PushFromRight
-  }
-
   render() {
-
     return (
-      <Navigator
-      configureScene={this.configureScene.bind(this)}
-      renderScene={this.renderScene.bind(this)}
-      navigationBar={
-        <Navigator.NavigationBar
-        routeMapper={{
-          LeftButton: (route, navigator, index, navState) =>
-          { return (<Text>Cancel</Text>); },
-          RightButton: (route, navigator, index, navState) =>
-          { return (<Text>Done</Text>); },
-          Title: (route, navigator, index, navState) =>
-          { return (<Text>Screenshot Organizer</Text>); },
-        }}
-        style={{backgroundColor: 'gray'}}
-        />
-      }
-      initialRoute={{
-        component: App,
-        passProps: {
-          store: ScreenshotOrganizerStore
-        }
-      }} />
+      <Container>
+        <Header>
+          <Body>
+            <Title>Screenshot Organizer</Title>
+          </Body>
+        </Header>
+        <Tabs>
+          <Tab heading="All">
+            <App
+              store={ScreenshotOrganizerStore}
+            />
+          </Tab>
+          <Tab heading="Folders">
+            <Text>Folders</Text>
+          </Tab>
+        </Tabs>
+      </Container>
     );
   }
 
