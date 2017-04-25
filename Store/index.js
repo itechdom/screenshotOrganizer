@@ -45,5 +45,16 @@ class Folder{
   }
 }
 
+class Screenshot{
+  id;
+  thumb = '';
+  photo = '';
+  caption = '';
+  selected = false;
+  constructor(id,thumb,photo,caption,selected){
+    
+  }
+}
+
 var screenshotOrganizerStore = new ScreenshotOrganizerStore();
 export default screenshotOrganizerStore;

@@ -2,42 +2,41 @@ import React, { Component } from 'react'
 import { View, Button, Alert, Text, TextInput, Modal, TouchableHighlight, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native'
 import {observer} from 'mobx-react/native'
 import DragDropTest from '../DragDropTest/example';
+import PhotoBrowser from 'react-native-photo-browser';
 //import { Container, Header, Title, Button, Left, Right, Body, Icon } from 'native-base';
 
 const App = observer(class App extends Component {
 
-  constructor () {
-    super()
+  constructor (props) {
+    super(props);
+    this._onSelectionChanged = this._onSelectionChanged.bind(this);
+    this._onActionButton = this._onActionButton.bind(this);
   }
 
-  //<DragDropTest
-  //  folderList={this.props.store.folderList}
-  //  screenshotList={this.props.store.screenshotList}
-  // />
+  _onSelectionChanged(media, index, selected){
+    Alert.alert(`${media.photo} selection status: ${selected}`);
+  }
+
+  _onActionButton(media, index){
+
+  }
 
   render() {
+    let media = this.props.store.screenshotList.map((screenshot,index)=>{
+      return {
+        photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`
+      }
+    })
     return <View style={styles.container}>
-    <AddFolderModal
-      onFolderCreate={(folder)=>this.props.store.addFolder(folder)}
-    />
-    {
-      this.props.store.folderList.map((folder)=>{
-        return <Text>{folder.title}</Text>
-      })
-    }
-    <ScrollView style={styles.row}>
-    {
-      this.props.store.screenshotList.map((screenshot,index)=>
-      <Image
-      source={{uri:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`}}
-      style={styles.image}
-      key={index}
+      <PhotoBrowser
+        mediaList={media}
+        displayActionButton={true}
+        displayTopBar={true}
+        displaySelectionButtons={true}
+        onSelectionChanged={this._onSelectionChanged}
       />
-    )
+    </View>
   }
-  </ScrollView>
-  </View>
-}
 
 })
 
@@ -60,30 +59,30 @@ class AddFolderModal extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
-         <View style={{marginTop: 22}}>
-           <View>
-             <TextInput
-               style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-               onChangeText={(text) => this.setState({text})}
-               value={this.state.text}
-             />
-             <TouchableOpacity
-               style={{margin: 5}}
-               onPress={() => this.setModalVisible(!this.state.modalVisible)}>
-               <Text>Close Me</Text>
-             </TouchableOpacity>
-             <TouchableOpacity
-               style={{margin: 5}}
-               onPress={() => {this.setModalVisible(!this.state.modalVisible);this.props.onFolderCreate(this.state.text)}}>
-               <Text>Create Folder</Text>
-             </TouchableOpacity>
-           </View>
-         </View>
-        </Modal>
+            <View style={{marginTop: 22}}>
+              <View>
+                <TextInput
+                  style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                  onChangeText={(text) => this.setState({text})}
+                  value={this.state.text}
+                />
+                <TouchableOpacity
+                  style={{margin: 5}}
+                  onPress={() => this.setModalVisible(!this.state.modalVisible)}>
+                  <Text>Close Me</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{margin: 5}}
+                  onPress={() => {this.setModalVisible(!this.state.modalVisible);this.props.onFolderCreate(this.state.text)}}>
+                  <Text>Create Folder</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
 
-        <TouchableHighlight onPress={() => {
-          this.setModalVisible(true)
-        }}>
+          <TouchableHighlight onPress={() => {
+            this.setModalVisible(true)
+          }}>
           <Text>Create Folder</Text>
         </TouchableHighlight>
 
@@ -94,7 +93,6 @@ class AddFolderModal extends Component {
 
 const styles = StyleSheet.create({
   container:{
-    marginTop:100,
     flex:1
   },
   row: {
