@@ -31,6 +31,7 @@ const App = observer(class App extends Component {
         mediaList={media}
         displayActionButton={true}
         displayTopBar={false}
+        renderTopBar={false}
         displaySelectionButtons={true}
         onSelectionChanged={this._onSelectionChanged}
         startOnGrid={true}
