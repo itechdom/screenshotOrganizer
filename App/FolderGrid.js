@@ -7,19 +7,46 @@ import {observer} from 'mobx-react/native'
 
 const FolderGrid =  observer(class FolderGrid extends Component {
 
+  state = {
+    selectedFolder:{}
+  }
+
   constructor(props){
     super(props);
+  }
+
+  _onSelectionChanged(media, index, selected){
+    console.log(`${media.photo} selection status: ${selected} index:${index}`);
+  }
+
+  _onActionButton(media, index){
+
   }
 
   render() {
     let folderList = this.props.folderList;
     return (
+      (this.state.selectedFolder.title)?
       <Content>
+        <Button onPress={()=>this.setState({selectedFolder:{}})} transparent>
+          <Text>Back</Text>
+        </Button>
+        <PhotoBrowser
+          mediaList={selectedFolder}
+          displayActionButton={true}
+          displayTopBar={false}
+          renderTopBar={false}
+          displaySelectionButtons={true}
+          onSelectionChanged={this._onSelectionChanged}
+          startOnGrid={true}
+        />
+      </Content>
+      :<Content>
         {
           (folderList.length > 0)?
           <Container style={{
-              flexDirection: 'row'
-            }}>
+            flexDirection: 'row'
+          }}>
           {folderList.map((folder)=>{
             return <Card>
               <CardItem>
@@ -47,7 +74,7 @@ const FolderGrid =  observer(class FolderGrid extends Component {
             marginTop:50
           }}>
           <Button onPress={()=>AlertIOS.prompt(
-            'Enter a Folder Name',
+            'New Folder',
             null,
             text => this.props.onFolderCreate(text)
           )}><Text>Create Folder</Text></Button>

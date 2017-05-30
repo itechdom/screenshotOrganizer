@@ -18,7 +18,8 @@ import {
   Alert,
   AlertIOS,
   PickerIOS,
-  TextInput
+  TextInput,
+  NavigatorIOS
 } from 'react-native';
 
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs, Footer, FooterTab } from 'native-base';
@@ -114,7 +115,7 @@ const ScreenshotOrganizer = observer(class ScreenshotOrganizer extends React.Com
         <Header>
           <Left>
             <Button onPress={()=>AlertIOS.prompt(
-              'Enter a Folder Name',
+              'New Folder',
               null,
               text => ScreenshotOrganizerStore.addFolder(text)
             )} transparent>
@@ -174,7 +175,7 @@ const MoveModal = observer(class MoveModal extends React.Component {
                   </Button>
                 </Left>
                 <Body>
-                  <Title>Move</Title>
+                  <Title>Move To Folder</Title>
                 </Body>
                 <Right>
                   <Button onPress={()=>ScreenshotOrganizerStore.toggleModalVisible()} transparent>
@@ -182,10 +183,9 @@ const MoveModal = observer(class MoveModal extends React.Component {
                   </Button>
                 </Right>
               </Header>
-              <Text>Move or Type a New Folder Name</Text>
               <TextInput
                 style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(text) => this.setState({selectedValue})}
+                onChangeText={(selectedValue) => this.setState({selectedValue})}
                 value={this.state.selectedValue}
               />
               <PickerIOS
