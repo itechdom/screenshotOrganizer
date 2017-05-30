@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import { Container, Content, Card, CardItem, Body, Button, Icon } from 'native-base';
+import { Container, Content, Card, CardItem, Body, Button, Icon, List, ListItem, Thumbnail } from 'native-base';
 import {Modal, Text, TouchableHighlight, View, Alert, StyleSheet, AlertIOS} from 'react-native';
 import PhotoBrowser from 'react-native-photo-browser';
 import {observer} from 'mobx-react/native'
@@ -44,30 +44,18 @@ const FolderGrid =  observer(class FolderGrid extends Component {
       :<Content>
         {
           (folderList.length > 0)?
-          <Container style={{
-            flexDirection: 'row'
-          }}>
+          <Content>
           {folderList.map((folder)=>{
-            return <Card>
-              <CardItem>
-                <Text>{folder.title}</Text>
-              </CardItem>
-              <CardItem cardBody>
-                <Text>Image Here ...</Text>
-              </CardItem>
-              <CardItem>
-                <Button transparent>
-                  <Icon active name="thumbs-up" />
-                  <Text>12 Likes</Text>
-                </Button>
-                <Button transparent>
-                  <Icon active name="chatbubbles" />
-                  <Text>4 Comments</Text>
-                </Button>
-                <Text>11h ago</Text>
-              </CardItem>
-            </Card>
-          })}</Container>:<Container style={{
+            return <List>
+              <ListItem>
+                {/* <Thumbnail square size={80} source={folder.screenshotList.first().} /> */}
+                <Body>
+                  <Text>{folder.title}</Text>
+                  <Text note>Its time to build a difference . .</Text>
+                </Body>
+              </ListItem>
+            </List>
+          })}</Content>:<Container style={{
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'center',
