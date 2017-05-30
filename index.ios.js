@@ -21,6 +21,8 @@ import {
 
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs, Footer, FooterTab } from 'native-base';
 
+import Autocomplete from 'react-native-autocomplete-input';
+
 import RNPhotosFramework from 'react-native-photos-framework';
 
 import {observer} from 'mobx-react/native';
@@ -34,6 +36,9 @@ const ScreenshotOrganizer = observer(class ScreenshotOrganizer extends React.Com
 
   constructor(props){
     super(props);
+    ScreenshotOrganizerStore.getFolder().then((res)=>{
+      ScreenshotOrganizerStore.folderList.push(...JSON.parse(res));
+    });
     RNPhotosFramework.requestAuthorization().then((statusObj) => {
       if (statusObj.isAuthorized) {
         console.log("statusObj",statusObj);
@@ -96,14 +101,12 @@ const ScreenshotOrganizer = observer(class ScreenshotOrganizer extends React.Com
   }
 
   render() {
-    ScreenshotOrganizerStore.getFolder().then((res)=>{
-      ScreenshotOrganizerStore.folderList.push(...JSON.parse(res));
-    });
     return (
       <Container>
         <MoveModal
           modalVisible={ScreenshotOrganizerStore.modalVisible}
           toggleModal={()=>{ScreenshotOrganizerStore.toggleModalVisible()}}
+          folderNames={ScreenshotOrganizerStore.folderList.map(folder=>folder.title)}
           onSubmit={(folder)=>{console.log(folder)}}
         />
         <Header>
@@ -142,7 +145,14 @@ const ScreenshotOrganizer = observer(class ScreenshotOrganizer extends React.Com
 })
 
 const MoveModal = observer(class MoveModal extends React.Component {
+
+  state = {
+    query:""
+  }
+
   render() {
+    let data = this.props.folderNames;
+    const { query } = this.state;
     return (
       <View style={{marginTop: 22}}>
         <Modal
@@ -154,10 +164,22 @@ const MoveModal = observer(class MoveModal extends React.Component {
           >
             <View style={{marginTop: 22}}>
               <View>
-                <Text>Hello World!</Text>
-                <TouchableHighlight onPress={()=>this.props.toggleModal()}>
-                  <Text>Hide Modal</Text>
-                </TouchableHighlight>
+                <Autocomplete
+                  data={data}
+                  defaultValue={query}
+                  onChangeText={text => this.setState({ query: text })}
+                  renderItem={data => (
+                    <TouchableOpacity onPress={() => this.setState({ query: data })}>
+                      <Text>{data}</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+                <Button onPress={()=>this.props.toggleModal()}>
+                  <Text>Submit</Text>
+                </Button>
+                <Button onPress={()=>this.props.toggleModal()}>
+                  <Text>Cancel</Text>
+                </Button>
               </View>
             </View>
           </Modal>
