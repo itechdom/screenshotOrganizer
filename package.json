@@ -14,7 +14,7 @@
     "react-native": "0.43.2",
     "react-native-autocomplete-input": "^3.2.1",
     "react-native-easy-grid": "^0.1.13",
-    "react-native-photo-browser": "^0.3.1",
+    "react-native-photo-browser": "github:itechdom/react-native-photo-browser",
     "react-native-photos-framework": "^1.0.3",
     "react-native-simple-modal": "^5.0.0",
     "uuid": "^3.0.1"

@@ -26,6 +26,7 @@ const App = observer(class App extends Component {
         photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`
       }
     })
+    let topBarComponent = Text;
     return <View style={styles.container}>
       <PhotoBrowser
         mediaList={media}
@@ -35,6 +36,7 @@ const App = observer(class App extends Component {
         displaySelectionButtons={true}
         onSelectionChanged={this._onSelectionChanged}
         startOnGrid={true}
+        topBarComponent={topBarComponent}
       />
     </View>
   }
