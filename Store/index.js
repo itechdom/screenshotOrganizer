@@ -35,10 +35,9 @@ class ScreenshotOrganizerStore {
       }),
       saveFolder:action((folderList)=>{
         try {
-          AsyncStorage.mergeItem('folderList', JSON.stringify(folderList), () => {
-            AsyncStorage.getItem('folderList', (err, result) => {
-              console.log(result);
-            });
+          AsyncStorage.getItem('folderList', (err, result) => {
+            console.log(result);
+            //AsyncStorage.mergeItem('folderList', JSON.stringify(folderList));
           });
         } catch (error) {
           // Error saving data

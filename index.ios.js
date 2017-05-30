@@ -12,10 +12,14 @@ import {
   View,
   TouchableOpacity,
   AppRegistry,
-  Navigator
+  Navigator,
+  Modal,
+  TouchableHighlight,
+  Alert,
+  AlertIOS
 } from 'react-native';
 
-import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs } from 'native-base';
+import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs, Footer, FooterTab } from 'native-base';
 
 import RNPhotosFramework from 'react-native-photos-framework';
 
@@ -96,23 +100,34 @@ class ScreenshotOrganizer extends React.Component {
     return (
       <Container>
         <Header>
+          <Left>
+          </Left>
           <Body>
             <Title>Screenshot Organizer</Title>
           </Body>
-        </Header>
-        <Tabs>
-          <Tab heading="All">
-            <App
-              store={ScreenshotOrganizerStore}
-            />
-          </Tab>
-          <Tab heading="Folders">
-            <FolderGrid folderList={ScreenshotOrganizerStore.folderList} />
-          </Tab>
-        </Tabs>
-      </Container>
-    );
-  }
+          <Right>
+            <Button onPress={()=>AlertIOS.prompt(
+              'Enter a Folder Name',
+              null,
+              text => ScreenshotOrganizerStore.addFolder(text)
+            )} transparent>
+            <Icon name='ios-add' />
+          </Button>
+        </Right>
+      </Header>
+      <Tabs>
+        <Tab heading="All">
+          <App
+            store={ScreenshotOrganizerStore}
+          />
+        </Tab>
+        <Tab heading="Folders">
+          <FolderGrid folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
+        </Tab>
+      </Tabs>
+    </Container>
+  );
+}
 
 }
 
