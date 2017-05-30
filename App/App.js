@@ -5,7 +5,7 @@ import {observer} from 'mobx-react/native'
 import PhotoBrowser from 'react-native-photo-browser';
 
 const App = observer(class App extends Component {
-
+  
   constructor (props) {
     super(props);
     this._onSelectionChanged = this._onSelectionChanged.bind(this);
