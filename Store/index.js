@@ -11,11 +11,7 @@ class ScreenshotOrganizerStore {
       /* See previous listing */
       screenshotList : [],
       folderList:[],
-      get filterByDate(){
-        return this.expenseList.filter(
-          expense =>  expense.date === this.selectedDate
-        )
-      },
+      modalVisible:false,
       testRequest:action(()=>{
         fetch('https://httpbin.org/ip')
         .then((response) => response.json())
@@ -25,6 +21,9 @@ class ScreenshotOrganizerStore {
         .catch((err)=>{
           console.error(err);
         })
+      }),
+      toggleModalVisible:action(()=>{
+        this.modalVisible = !this.modalVisible;
       }),
       addFolder:action((folder)=>{
         this.folderList.push(new Folder(folder));

@@ -3,6 +3,7 @@ import { View, Alert, Text, TextInput, Modal, TouchableHighlight, TouchableOpaci
 import { Container, Header, Title, Button, Left, Right, Body, Icon } from 'native-base';
 import {observer} from 'mobx-react/native'
 import PhotoBrowser from 'react-native-photo-browser';
+import Autocomplete from 'react-native-autocomplete-input';
 
 const App = observer(class App extends Component {
 
@@ -40,7 +41,6 @@ const App = observer(class App extends Component {
   }
 
 })
-
 
 const styles = StyleSheet.create({
   container:{

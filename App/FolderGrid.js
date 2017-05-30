@@ -58,7 +58,6 @@ const FolderGrid =  observer(class FolderGrid extends Component {
 }
 });
 
-
 const styles = StyleSheet.create({
   column:{
     flexDirection:'column'

@@ -30,7 +30,7 @@ import ScreenshotOrganizerStore from './Store';
 import App from './App/App.js';
 import FolderGrid from './App/FolderGrid.js';
 
-class ScreenshotOrganizer extends React.Component {
+const ScreenshotOrganizer = observer(class ScreenshotOrganizer extends React.Component {
 
   constructor(props){
     super(props);
@@ -93,7 +93,6 @@ class ScreenshotOrganizer extends React.Component {
         });
       }
     });
-
   }
 
   render() {
@@ -102,6 +101,11 @@ class ScreenshotOrganizer extends React.Component {
     });
     return (
       <Container>
+        <MoveModal
+          modalVisible={ScreenshotOrganizerStore.modalVisible}
+          toggleModal={()=>{ScreenshotOrganizerStore.toggleModalVisible()}}
+          onSubmit={(folder)=>{console.log(folder)}}
+        />
         <Header>
           <Left>
             <Button onPress={()=>AlertIOS.prompt(
@@ -116,30 +120,51 @@ class ScreenshotOrganizer extends React.Component {
           <Title>Screenshot Organizer</Title>
         </Body>
         <Right>
-          <Button onPress={()=>AlertIOS.prompt(
-            'Enter a Folder Name',
-            null,
-            text => ScreenshotOrganizerStore.addFolder(text)
-          )} transparent>
-          <Text>Move</Text>
-        </Button>
-      </Right>
-    </Header>
-    <Tabs>
-      <Tab heading="All">
-        <App
-          store={ScreenshotOrganizerStore}
-          screenshotList={ScreenshotOrganizerStore.screenshotList}
-        />
-      </Tab>
-      <Tab heading="Folders">
-        <FolderGrid folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
-      </Tab>
-    </Tabs>
-  </Container>
-);
+          <Button onPress={()=>ScreenshotOrganizerStore.toggleModalVisible()} transparent>
+            <Text>Move</Text>
+          </Button>
+        </Right>
+      </Header>
+      <Tabs>
+        <Tab heading="All">
+          <App
+            store={ScreenshotOrganizerStore}
+            screenshotList={ScreenshotOrganizerStore.screenshotList}
+          />
+        </Tab>
+        <Tab heading="Folders">
+          <FolderGrid modalVisible={ScreenshotOrganizerStore.modalVisible} folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
+        </Tab>
+      </Tabs>
+    </Container>
+  );
 }
+})
 
-}
+const MoveModal = observer(class MoveModal extends React.Component {
+  render() {
+    return (
+      <View style={{marginTop: 22}}>
+        <Modal
+          animationType={"slide"}
+          transparent={false}
+          visible={this.props.modalVisible}
+          supportedOrientations={['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right']}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+          >
+            <View style={{marginTop: 22}}>
+              <View>
+                <Text>Hello World!</Text>
+                <TouchableHighlight onPress={()=>this.props.toggleModal()}>
+                  <Text>Hide Modal</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
+        </View>
+      );
+    }
+  });
 
-AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizer);
+
+  AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizer);
