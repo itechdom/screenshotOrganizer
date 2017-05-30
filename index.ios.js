@@ -95,8 +95,11 @@ class ScreenshotOrganizer extends React.Component {
     });
 
   }
-
+  
   render() {
+    ScreenshotOrganizerStore.getFolder().then((res)=>{
+      ScreenshotOrganizerStore.folderList.push(...JSON.parse(res));
+    });
     return (
       <Container>
         <Header>

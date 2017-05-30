@@ -30,22 +30,22 @@ class ScreenshotOrganizerStore {
         this.folderList.push(new Folder(folder));
         this.saveFolder(this.folderList);
       }),
+      removeFolder:action((folder)=>{
+      }),
       addScreenshotToFolder:action((screenshot,folder)=>{
         folder.screenshotList.push(screenshot);
       }),
       saveFolder:action((folderList)=>{
-        try {
-          AsyncStorage.getItem('folderList', (err, result) => {
-            console.log(result);
-            //AsyncStorage.mergeItem('folderList', JSON.stringify(folderList));
-          });
-        } catch (error) {
-          // Error saving data
-        }
+        return AsyncStorage.setItem('folderList', JSON.stringify(folderList));
       }),
       getFolder:action(()=>{
-        AsyncStorage.getItem('folderList', (err, result) => {
-          console.log(result);
+        return new Promise((resolve,reject)=>{
+          AsyncStorage.getItem('folderList', (err, result) => {
+            if(err){
+              return reject(err);
+            }
+            return resolve(result);
+          });
         });
       })
     })
