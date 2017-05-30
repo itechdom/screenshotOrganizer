@@ -13,7 +13,7 @@ const App = observer(class App extends Component {
   }
 
   _onSelectionChanged(media, index, selected){
-    Alert.alert(`${media.photo} selection status: ${selected} index:${index}`);
+    console.log(`${media.photo} selection status: ${selected} index:${index}`);
   }
 
   _onActionButton(media, index){
@@ -21,7 +21,7 @@ const App = observer(class App extends Component {
   }
 
   render() {
-    let media = this.props.store.screenshotList.map((screenshot,index)=>{
+    let media = this.props.screenshotList.map((screenshot,index)=>{
       return {
         photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`
       }

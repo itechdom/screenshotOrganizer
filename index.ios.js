@@ -95,7 +95,7 @@ class ScreenshotOrganizer extends React.Component {
     });
 
   }
-  
+
   render() {
     ScreenshotOrganizerStore.getFolder().then((res)=>{
       ScreenshotOrganizerStore.folderList.push(...JSON.parse(res));
@@ -104,11 +104,6 @@ class ScreenshotOrganizer extends React.Component {
       <Container>
         <Header>
           <Left>
-          </Left>
-          <Body>
-            <Title>Screenshot Organizer</Title>
-          </Body>
-          <Right>
             <Button onPress={()=>AlertIOS.prompt(
               'Enter a Folder Name',
               null,
@@ -116,20 +111,33 @@ class ScreenshotOrganizer extends React.Component {
             )} transparent>
             <Icon name='ios-add' />
           </Button>
-        </Right>
-      </Header>
-      <Tabs>
-        <Tab heading="All">
-          <App
-            store={ScreenshotOrganizerStore}
-          />
-        </Tab>
-        <Tab heading="Folders">
-          <FolderGrid folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
-        </Tab>
-      </Tabs>
-    </Container>
-  );
+        </Left>
+        <Body>
+          <Title>Screenshot Organizer</Title>
+        </Body>
+        <Right>
+          <Button onPress={()=>AlertIOS.prompt(
+            'Enter a Folder Name',
+            null,
+            text => ScreenshotOrganizerStore.addFolder(text)
+          )} transparent>
+          <Text>Move</Text>
+        </Button>
+      </Right>
+    </Header>
+    <Tabs>
+      <Tab heading="All">
+        <App
+          store={ScreenshotOrganizerStore}
+          screenshotList={ScreenshotOrganizerStore.screenshotList}
+        />
+      </Tab>
+      <Tab heading="Folders">
+        <FolderGrid folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
+      </Tab>
+    </Tabs>
+  </Container>
+);
 }
 
 }

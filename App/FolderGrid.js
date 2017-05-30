@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Container, Content, Card, CardItem, Body, Button, Icon } from 'native-base';
 import {Modal, Text, TouchableHighlight, View, Alert, StyleSheet, AlertIOS} from 'react-native';
+import PhotoBrowser from 'react-native-photo-browser';
 import {observer} from 'mobx-react/native'
 
 const FolderGrid =  observer(class FolderGrid extends Component {

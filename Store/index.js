@@ -30,8 +30,6 @@ class ScreenshotOrganizerStore {
         this.folderList.push(new Folder(folder));
         this.saveFolder(this.folderList);
       }),
-      removeFolder:action((folder)=>{
-      }),
       addScreenshotToFolder:action((screenshot,folder)=>{
         folder.screenshotList.push(screenshot);
       }),
@@ -54,11 +52,12 @@ class ScreenshotOrganizerStore {
 
 class Folder{
   id;
-  screenshotList;
   title;
   constructor(title,screenshotList=[]){
-    this.title = title;
-    this.screenshotList = screenshotList;
+    extendObservable(this, {
+      title:this.title,
+      screenshotList:this.screenshotList
+    });
   }
 }
 
