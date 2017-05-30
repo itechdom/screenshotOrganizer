@@ -13,7 +13,7 @@ const App = observer(class App extends Component {
   }
 
   _onSelectionChanged(media, index, selected){
-    Alert.alert(`${media.photo} selection status: ${selected}`);
+    Alert.alert(`${media.photo} selection status: ${selected} index:${index}`);
   }
 
   _onActionButton(media, index){

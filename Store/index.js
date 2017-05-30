@@ -1,4 +1,5 @@
 import {extendObservable, observable, computed, autorun, action, reaction} from 'mobx';
+import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
 
 class ScreenshotOrganizerStore {
@@ -27,9 +28,26 @@ class ScreenshotOrganizerStore {
       }),
       addFolder:action((folder)=>{
         this.folderList.push(new Folder(folder));
+        this.saveFolder(this.folderList);
       }),
       addScreenshotToFolder:action((screenshot,folder)=>{
         folder.screenshotList.push(screenshot);
+      }),
+      saveFolder:action((folderList)=>{
+        try {
+          AsyncStorage.mergeItem('folderList', JSON.stringify(folderList), () => {
+            AsyncStorage.getItem('folderList', (err, result) => {
+              console.log(result);
+            });
+          });
+        } catch (error) {
+          // Error saving data
+        }
+      }),
+      getFolder:action(()=>{
+        AsyncStorage.getItem('folderList', (err, result) => {
+          console.log(result);
+        });
       })
     })
   }
@@ -52,7 +70,7 @@ class Screenshot{
   caption = '';
   selected = false;
   constructor(id,thumb,photo,caption,selected){
-    
+
   }
 }
 

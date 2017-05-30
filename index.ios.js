@@ -15,17 +15,16 @@ import {
   Navigator
 } from 'react-native';
 
-
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs } from 'native-base';
 
 import RNPhotosFramework from 'react-native-photos-framework';
-
 
 import {observer} from 'mobx-react/native';
 
 import ScreenshotOrganizerStore from './Store';
 
 import App from './App/App.js';
+import FolderGrid from './App/FolderGrid.js';
 
 class ScreenshotOrganizer extends React.Component {
 
@@ -108,7 +107,7 @@ class ScreenshotOrganizer extends React.Component {
             />
           </Tab>
           <Tab heading="Folders">
-            <Text>Folders</Text>
+            <FolderGrid folderList={ScreenshotOrganizerStore.folderList} />
           </Tab>
         </Tabs>
       </Container>
