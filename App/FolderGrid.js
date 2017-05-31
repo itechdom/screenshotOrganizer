@@ -42,17 +42,19 @@ const FolderGrid =  observer(class FolderGrid extends Component {
           enableGrid={false}
         />
       </Content>
-      :<Content>
+      :<Container>
         {
           (folderList.length > 0)?
           <Content>
           {folderList.map((folder)=>{
             return <List>
               <ListItem>
-                {/* <Thumbnail square size={80} source={folder.screenshotList.first().} /> */}
+                {
+                  (folder.screenshotList[0])?<Thumbnail square size={80} source={folder.screenshotList[0]} />:<Thumbnail square size={80} source={require('../img/empty-box.png')} />
+                }
                 <Body>
                   <Text>{folder.title}</Text>
-                  <Text note>Its time to build a difference . .</Text>
+                  <Text note>{folder.screenshotList.length} Photos</Text>
                 </Body>
               </ListItem>
             </List>
@@ -69,7 +71,7 @@ const FolderGrid =  observer(class FolderGrid extends Component {
           )}><Text>Create Folder</Text></Button>
         </Container>
       }
-    </Content>
+    </Container>
   );
 }
 });

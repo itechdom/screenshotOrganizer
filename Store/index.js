@@ -1,4 +1,4 @@
-import {extendObservable, observable, computed, autorun, action, reaction} from 'mobx';
+import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
 
@@ -25,15 +25,15 @@ class ScreenshotOrganizerStore {
       toggleModalVisible:action(()=>{
         this.modalVisible = !this.modalVisible;
       }),
-      addFolder:action((folder)=>{
-        this.folderList.push(new Folder(folder));
+      addFolder:action((folderTitle)=>{
+        this.folderList.push(new Folder(folderTitle));
         this.saveFolder(this.folderList);
       }),
       addScreenshotToFolder:action((screenshot,folder)=>{
         folder.screenshotList.push(screenshot);
       }),
       saveFolder:action((folderList)=>{
-        return AsyncStorage.setItem('folderList', JSON.stringify(folderList));
+        return AsyncStorage.setItem('folderList', JSON.stringify(toJS(folderList)));
       }),
       getFolder:action(()=>{
         return new Promise((resolve,reject)=>{
@@ -54,8 +54,8 @@ class Folder{
   title;
   constructor(title,screenshotList=[]){
     extendObservable(this, {
-      title:this.title,
-      screenshotList:this.screenshotList
+      title:title,
+      screenshotList:screenshotList
     });
   }
 }

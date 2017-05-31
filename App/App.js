@@ -21,7 +21,7 @@ const App = observer(class App extends Component {
   }
 
   render() {
-    let media = this.props.screenshotList.map((screenshot,index)=>{
+    let mediaList = this.props.screenshotList.map((screenshot,index)=>{
       return {
         photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`
       }
@@ -29,7 +29,7 @@ const App = observer(class App extends Component {
     let topBarComponent = Text;
     return <View style={styles.container}>
       <PhotoBrowser
-        mediaList={media}
+        mediaList={mediaList}
         displayActionButton={true}
         renderTopBar={false}
         displaySelectionButtons={true}
