@@ -137,11 +137,12 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
         <Tab heading="All">
           <App
             store={ScreenshotOrganizerStore}
-            screenshotList={ScreenshotOrganizerStore.screenshotList}
+            mediaList={ScreenshotOrganizerStore.mediaList}
+            onSelectionChanged={(media,index,selected)=>{ScreenshotOrganizerStore.selectScreenshot(index,selected)}}
           />
         </Tab>
         <Tab heading="Folders">
-          <FolderGrid modalVisible={ScreenshotOrganizerStore.modalVisible} folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
+          <FolderGrid screenshotList={ScreenshotOrganizerStore.screenshotList} modalVisible={ScreenshotOrganizerStore.modalVisible} folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
         </Tab>
       </Tabs>
     </Container>

@@ -14,21 +14,15 @@ const App = observer(class App extends Component {
 
   _onSelectionChanged(media, index, selected){
     console.log(`${media.photo} selection status: ${selected} index:${index}`);
-    this.props.screenshotList[index].selected = selected;
+    this.props.onSelectionChanged(media,index,selected);
   }
 
   _onActionButton(media, index){
-
   }
 
   render() {
-    let mediaList = this.props.screenshotList.map((screenshot,index)=>{
-      return {
-        photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,
-        selected:screenshot.selected
-      }
-    })
     let topBarComponent = Text;
+    let mediaList = this.props.mediaList;
     return <View style={styles.container}>
       <PhotoBrowser
         mediaList={mediaList}

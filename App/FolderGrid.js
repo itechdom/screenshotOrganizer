@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Container, Content, Card, CardItem, Body, Button, Icon, List, ListItem, Thumbnail } from 'native-base';
-import {Modal, Text, TouchableHighlight, View, Alert, StyleSheet, AlertIOS} from 'react-native';
+import {Image, Modal, Text, TouchableHighlight, View, Alert, StyleSheet, AlertIOS} from 'react-native';
 import PhotoBrowser from 'react-native-photo-browser';
 import {observer} from 'mobx-react/native'
 
@@ -24,7 +24,7 @@ const FolderGrid =  observer(class FolderGrid extends Component {
   }
 
   render() {
-    let folderList = this.props.folderList;
+    let {folderList,screenshotList} = this.props;
     return (
       (this.state.selectedFolder.title)?
       <Content>
@@ -46,34 +46,42 @@ const FolderGrid =  observer(class FolderGrid extends Component {
         {
           (folderList.length > 0)?
           <Content>
-          {folderList.map((folder,index)=>{
-            return <List key={index}>
-              <ListItem>
-                {
-                  (folder.screenshotList.length > 0)?<Thumbnail square size={80} source={folder.screenshotList[0]} />:<Thumbnail square size={80} source={require('../img/empty-box.png')} />
-                }
-                <Body>
-                  <Text>{folder.title}</Text>
-                  <Text note>{folder.screenshotList.length} Photos</Text>
-                </Body>
-              </ListItem>
-            </List>
-          })}</Content>:<Container style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginTop:50
-          }}>
-          <Button onPress={()=>AlertIOS.prompt(
-            'New Folder',
-            null,
-            text => this.props.onFolderCreate(text)
-          )}><Text>Create Folder</Text></Button>
-        </Container>
-      }
-    </Container>
-  );
-}
+            {folderList.map((folder,index)=>{
+              let firstScreenshot = screenshotList[folder.screenshotList[0]];
+              return <List key={index}>
+                <ListItem>
+                  {/* {
+                    (folder.screenshotList.length > 0)?
+                    <Image
+                      style={{width: 50, height: 50}}
+                      source={{uri: `assets-library://asset/asset.PNG?id=${firstScreenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`}}
+                    />
+                    :
+                    <Thumbnail square size={80} source={require('../img/empty-box.png')} />
+                  } */}
+                  <Thumbnail square size={80} source={require('../img/empty-box.png')} />
+                  <Body>
+                    <Text>{folder.title}</Text>
+                    <Text note>{folder.screenshotList.length} Photos</Text>
+                  </Body>
+                </ListItem>
+              </List>
+            })}</Content>:<Container style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginTop:50
+            }}>
+            <Button onPress={()=>AlertIOS.prompt(
+              'New Folder',
+              null,
+              text => this.props.onFolderCreate(text)
+            )}><Text>Create Folder</Text></Button>
+          </Container>
+        }
+      </Container>
+    );
+  }
 });
 
 const styles = StyleSheet.create({

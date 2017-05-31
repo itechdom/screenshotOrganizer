@@ -2,6 +2,7 @@ import {extendObservable, observable, computed, autorun, action, reaction, toJS}
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
 
+
 export class ScreenshotOrganizer {
 
   pendingRequestCount = 0;
@@ -12,6 +13,7 @@ export class ScreenshotOrganizer {
       screenshotList : [],
       folderList:[],
       modalVisible:false,
+      selectedIndices:{},
       testRequest:action(()=>{
         fetch('https://httpbin.org/ip')
         .then((response) => response.json())
@@ -22,6 +24,18 @@ export class ScreenshotOrganizer {
           console.error(err);
         })
       }),
+      mediaList:computed(()=>{
+        return this.screenshotList.map((screenshot,index)=>{
+          return {
+            photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,
+            selected:screenshot.selected
+          }
+        })
+      }),
+      selectScreenshot:action((index,selected)=>{
+        //this.screenshotList[index].selected = selected;
+        this.selectedIndices[index] = selected;
+      }),
       toggleModalVisible:action(()=>{
         this.modalVisible = !this.modalVisible;
       }),
@@ -30,15 +44,11 @@ export class ScreenshotOrganizer {
         this.saveFolder(this.folderList);
       }),
       addScreenshotListToFolder:action((folderTitle)=>{
-        let selectedScreenshotList = this.screenshotList.filter((screenshot)=>screenshot.selected);
         let selectedFolder = this.folderList.find((f)=>{
           return folderTitle === f.title;
         });
-        let newScreenshotList = Object.assign([],toJS(selectedScreenshotList));
-        //console.log(selectedFolder,newScreenshotList);
         selectedFolder.screenshotList.clear();
-        selectedFolder.screenshotList.push(...newScreenshotList);
-        //selectedScreenshotList.map((screenshot)=>this.screenshotList.remove(screenshot));
+        selectedFolder.screenshotList.push(...Object.keys(this.selectedIndices));
       }),
       saveFolder:action((folderList)=>{
         return AsyncStorage.setItem('folderList', JSON.stringify(toJS(folderList)));
