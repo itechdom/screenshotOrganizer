@@ -34,9 +34,9 @@ const App = observer(class App extends Component {
         renderTopBar={false}
         displaySelectionButtons={true}
         onSelectionChanged={this._onSelectionChanged}
-        enableFullScreen={true}
+        enableFullScreen={false}
         onPhotoTap={(rowId,media)=>{media.selected = !media.selected;console.log(media)}}
-        startOnGrid={false}
+        startOnGrid={true}
         topBarComponent={topBarComponent}
         onBack={()=>Alert.alert("Back!")}
       />
