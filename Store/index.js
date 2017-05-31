@@ -37,6 +37,7 @@ class ScreenshotOrganizerStore {
         let newScreenshotList = Object.assign([],toJS(selectedScreenshotList));
         selectedFolder.screenshotList.clear();
         selectedFolder.screenshotList.push(...newScreenshotList);
+        selectedScreenshotList.map((screenshot)=>this.screenshotList.remove(screenshot));
       }),
       saveFolder:action((folderList)=>{
         return AsyncStorage.setItem('folderList', JSON.stringify(toJS(folderList)));
