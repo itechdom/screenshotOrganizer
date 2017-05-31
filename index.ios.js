@@ -178,7 +178,7 @@ const MoveModal = observer(class MoveModal extends React.Component {
                   <Title>Move To Folder</Title>
                 </Body>
                 <Right>
-                  <Button onPress={()=>ScreenshotOrganizerStore.toggleModalVisible()} transparent>
+                  <Button onPress={()=>{ScreenshotOrganizerStore.addScreenshotListToFolder(this.state.selectedValue);ScreenshotOrganizerStore.toggleModalVisible()}} transparent>
                     <Text>Submit</Text>
                   </Button>
                 </Right>

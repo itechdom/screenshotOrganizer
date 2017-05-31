@@ -46,11 +46,11 @@ const FolderGrid =  observer(class FolderGrid extends Component {
         {
           (folderList.length > 0)?
           <Content>
-          {folderList.map((folder)=>{
-            return <List>
+          {folderList.map((folder,index)=>{
+            return <List key={index}>
               <ListItem>
                 {
-                  (folder.screenshotList[0])?<Thumbnail square size={80} source={folder.screenshotList[0]} />:<Thumbnail square size={80} source={require('../img/empty-box.png')} />
+                  (folder.screenshotList.length > 0)?<Thumbnail square size={80} source={folder.screenshotList[0]} />:<Thumbnail square size={80} source={require('../img/empty-box.png')} />
                 }
                 <Body>
                   <Text>{folder.title}</Text>

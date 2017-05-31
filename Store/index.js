@@ -29,8 +29,14 @@ class ScreenshotOrganizerStore {
         this.folderList.push(new Folder(folderTitle));
         this.saveFolder(this.folderList);
       }),
-      addScreenshotToFolder:action((screenshot,folder)=>{
-        folder.screenshotList.push(screenshot);
+      addScreenshotListToFolder:action((folderTitle)=>{
+        let selectedScreenshotList = this.screenshotList.filter((screenshot)=>screenshot.selected);
+        let selectedFolder = this.folderList.find((f)=>{
+          return folderTitle === f.title;
+        });
+        let newScreenshotList = Object.assign([],toJS(selectedScreenshotList));
+        selectedFolder.screenshotList.clear();
+        selectedFolder.screenshotList.push(...newScreenshotList);
       }),
       saveFolder:action((folderList)=>{
         return AsyncStorage.setItem('folderList', JSON.stringify(toJS(folderList)));

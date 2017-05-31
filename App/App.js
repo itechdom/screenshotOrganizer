@@ -14,6 +14,7 @@ const App = observer(class App extends Component {
 
   _onSelectionChanged(media, index, selected){
     console.log(`${media.photo} selection status: ${selected} index:${index}`);
+    this.props.screenshotList[index].selected = selected;
   }
 
   _onActionButton(media, index){
@@ -23,7 +24,8 @@ const App = observer(class App extends Component {
   render() {
     let mediaList = this.props.screenshotList.map((screenshot,index)=>{
       return {
-        photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`
+        photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,
+        selected:screenshot.selected
       }
     })
     let topBarComponent = Text;
@@ -35,7 +37,6 @@ const App = observer(class App extends Component {
         displaySelectionButtons={true}
         onSelectionChanged={this._onSelectionChanged}
         enableFullScreen={false}
-        onPhotoTap={(rowId,media)=>{media.selected = !media.selected;console.log(media)}}
         startOnGrid={true}
         topBarComponent={topBarComponent}
         onBack={()=>Alert.alert("Back!")}
