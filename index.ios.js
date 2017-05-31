@@ -30,10 +30,12 @@ import RNPhotosFramework from 'react-native-photos-framework';
 
 import {observer} from 'mobx-react/native';
 
-import ScreenshotOrganizerStore from './Store';
+import {ScreenshotOrganizer,Folder,Screenshot} from './Store';
 
 import App from './App/App.js';
 import FolderGrid from './App/FolderGrid.js';
+
+let ScreenshotOrganizerStore = new ScreenshotOrganizer();
 
 const ScreenshotOrganizer = observer(class ScreenshotOrganizer extends React.Component {
 

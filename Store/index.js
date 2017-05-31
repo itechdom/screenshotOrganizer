@@ -2,7 +2,7 @@ import {extendObservable, observable, computed, autorun, action, reaction, toJS}
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
 
-class ScreenshotOrganizerStore {
+export class ScreenshotOrganizer {
 
   pendingRequestCount = 0;
 
@@ -37,7 +37,7 @@ class ScreenshotOrganizerStore {
         let newScreenshotList = Object.assign([],toJS(selectedScreenshotList));
         selectedFolder.screenshotList.clear();
         selectedFolder.screenshotList.push(...newScreenshotList);
-        selectedScreenshotList.map((screenshot)=>this.screenshotList.remove(screenshot));
+        //selectedScreenshotList.map((screenshot)=>this.screenshotList.remove(screenshot));
       }),
       saveFolder:action((folderList)=>{
         return AsyncStorage.setItem('folderList', JSON.stringify(toJS(folderList)));
@@ -56,7 +56,7 @@ class ScreenshotOrganizerStore {
   }
 }
 
-class Folder{
+export class Folder{
   id;
   title;
   constructor(title,screenshotList=[]){
@@ -67,7 +67,7 @@ class Folder{
   }
 }
 
-class Screenshot{
+export class Screenshot{
   id;
   thumb = '';
   photo = '';
@@ -77,6 +77,3 @@ class Screenshot{
 
   }
 }
-
-var screenshotOrganizerStore = new ScreenshotOrganizerStore();
-export default screenshotOrganizerStore;
