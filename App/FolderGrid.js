@@ -28,6 +28,7 @@ const FolderGrid =  observer(class FolderGrid extends Component {
     return (
       (this.state.selectedFolder.title)?
       <Content>
+        <Text>{selectedFolder.title}</Text>
         <Button onPress={()=>this.setState({selectedFolder:{}})} transparent>
           <Text>Back</Text>
         </Button>
@@ -38,7 +39,7 @@ const FolderGrid =  observer(class FolderGrid extends Component {
           renderTopBar={false}
           displaySelectionButtons={true}
           onSelectionChanged={this._onSelectionChanged}
-          startOnGrid={true}
+          enableGrid={false}
         />
       </Content>
       :<Content>
