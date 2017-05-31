@@ -37,7 +37,7 @@ import FolderGrid from './App/FolderGrid.js';
 
 let ScreenshotOrganizerStore = new ScreenshotOrganizer();
 
-const ScreenshotOrganizer = observer(class ScreenshotOrganizer extends React.Component {
+const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends React.Component {
 
   constructor(props){
     super(props);
@@ -210,4 +210,4 @@ const MoveModal = observer(class MoveModal extends React.Component {
 });
 
 
-AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizer);
+AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizerApp);

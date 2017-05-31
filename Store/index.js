@@ -35,6 +35,7 @@ export class ScreenshotOrganizer {
           return folderTitle === f.title;
         });
         let newScreenshotList = Object.assign([],toJS(selectedScreenshotList));
+        //console.log(selectedFolder,newScreenshotList);
         selectedFolder.screenshotList.clear();
         selectedFolder.screenshotList.push(...newScreenshotList);
         //selectedScreenshotList.map((screenshot)=>this.screenshotList.remove(screenshot));
