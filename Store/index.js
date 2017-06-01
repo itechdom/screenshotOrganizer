@@ -22,13 +22,12 @@ export class ScreenshotOrganizer {
           }
         })
       }),
-      getPhotos:action(()=>{
-        getPhotosIOS(()=>{
+      getPhotoListIOS:action(()=>{
+        getPhotoListIOS((response)=>{  
+        },(updateFn)=>{
 
         },()=>{
-
-        },()=>{
-
+          //this is full reload
         });
       }),
       selectScreenshot:action((media,index,selected)=>{
