@@ -1,10 +1,9 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
 import RNPhotosFramework from 'react-native-photos-framework';
 
-export const getPhotos = (loadFn,updateFn) => {
+export const getPhotoListIOS = (loadFn,updateFn,updateFullFn) => {
   RNPhotosFramework.requestAuthorization().then((statusObj) => {
     if (statusObj.isAuthorized) {
-      console.log("statusObj",statusObj);
       RNPhotosFramework.getAlbums({
         type: 'smartAlbum',
         subType: 'smartAlbumScreenshots',
@@ -32,17 +31,10 @@ export const getPhotos = (loadFn,updateFn) => {
         const unsubscribeFunc = album.onChange((changeDetails, update) => {
           if(changeDetails.hasIncrementalChanges) {
             //Important! Assets must be supplied in original fetch-order.
-            update(ScreenshotOrganizerStore.screenshotList, (updatedAssetArray) => {
-              ScreenshotOrganizerStore.screenshotList.replace(updatedAssetArray);
-            },
-            //If RNPF needs to retrive more assets to complete the change,
-            //eg. a move happened that moved a previous out of array-index asset into your corrently loaded assets.
-            //Here you can apply a param obj for options on how to load those assets. eg. ´includeMetadata : true´.
-            {
-              includeMetadata : true
-            });
+            updateFn(update);
           }else {
             //Do full reload here..
+            updateFullFn();
           }
         });
         return album.getAssets({
@@ -55,8 +47,8 @@ export const getPhotos = (loadFn,updateFn) => {
           trackInsertsAndDeletes: true,
           trackChanges: false
         }).then((response) => {
-          console.log("response from lib:",response);
-          ScreenshotOrganizerStore.screenshotList.push(...response.assets);
+          //console.log("response from lib:",response);
+          loadFn(response.assets);
         });
       });
     }
