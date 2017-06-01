@@ -41,6 +41,7 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
     ScreenshotOrganizerStore.getFolder().then((res)=>{
       ScreenshotOrganizerStore.folderList.push(...JSON.parse(res));
     });
+    ScreenshotOrganizerStore.getPhotoListIOS();
   }
 
   render() {

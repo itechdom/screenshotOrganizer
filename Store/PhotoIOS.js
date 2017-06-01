@@ -26,7 +26,6 @@ export const getPhotoListIOS = (loadFn,updateFn,updateFullFn) => {
         trackChanges: false
 
       }).then((queryResult) => {
-        console.log(queryResult);
         const album = queryResult.albums[0];
         const unsubscribeFunc = album.onChange((changeDetails, update) => {
           if(changeDetails.hasIncrementalChanges) {

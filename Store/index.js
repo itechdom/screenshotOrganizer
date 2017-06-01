@@ -24,7 +24,7 @@ export class ScreenshotOrganizer {
       }),
       getPhotoListIOS:action(()=>{
         getPhotoListIOS((response)=>{
-
+          this.screenshotList.push(...response);
         },(updateFn)=>{
 
         },()=>{
