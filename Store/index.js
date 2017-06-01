@@ -15,17 +15,15 @@ export class ScreenshotOrganizer {
       modalVisible:false,
       selectedPhotos:[],
       mediaList:computed(()=>{
-        return this.screenshotList.map((screenshot,index)=>{
-          return {
-            photo:`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,
-            selected:screenshot.selected
-          }
-        })
+        return this.screenshotList.slice();
       }),
       getPhotoListIOS:action(()=>{
         getPhotoListIOS((response)=>{
-          this.screenshotList.push(...response);
-        },(updateFn)=>{
+          let screenshotList = response.map((screenshot)=>{
+            return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false);
+          })
+          this.screenshotList.push(...screenshotList);
+        },(update)=>{
           update(this.screenshotList, (updatedAssetArray) => {
             this.screenshotList.replace(updatedAssetArray);
           },
@@ -92,7 +90,7 @@ export class Screenshot{
   id;
   photo = '';
   selected = false;
-  constructor(id,photo,selected){
+  constructor(photo,selected){
     extendObservable(this, {
       photo:photo,
       selected:selected
