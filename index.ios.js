@@ -1,5 +1,4 @@
 'use strict';
-
 const React = require('react');
 const ReactNative = require('react-native');
 import {
@@ -113,41 +112,41 @@ const MoveModal = observer(class MoveModal extends React.Component {
                 <Header>
                   <Left>
                     <Button onPress={()=>ScreenshotOrganizerStore.toggleModalVisible()} transparent>
-                    <Text>Cancel</Text>
-                  </Button>
-                </Left>
-                <Body>
-                  <Title>Move To Folder</Title>
-                </Body>
-                <Right>
-                  <Button onPress={()=>{ScreenshotOrganizerStore.addScreenshotListToFolder(this.state.selectedValue);ScreenshotOrganizerStore.toggleModalVisible()}} transparent>
-                    <Text>Submit</Text>
-                  </Button>
-                </Right>
-              </Header>
-              <TextInput
-                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(selectedValue) => this.setState({selectedValue})}
-                value={this.state.selectedValue}
-              />
-              <PickerIOS
-                selectedValue={this.state.selectedValue}
-                onValueChange={(selectedValue) => this.setState({selectedValue})}>
-                {data.map((title,index) => (
-                  <PickerIOS.Item
-                    key={index}
-                    value={title}
-                    label={title}
-                  />
-                ))}
-              </PickerIOS>
+                      <Text>Cancel</Text>
+                    </Button>
+                  </Left>
+                  <Body>
+                    <Title>Move To Folder</Title>
+                  </Body>
+                  <Right>
+                    <Button onPress={()=>{ScreenshotOrganizerStore.addScreenshotListToFolder(this.state.selectedValue);ScreenshotOrganizerStore.toggleModalVisible()}} transparent>
+                      <Text>Submit</Text>
+                    </Button>
+                  </Right>
+                </Header>
+                <TextInput
+                  style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                  onChangeText={(selectedValue) => this.setState({selectedValue})}
+                  value={this.state.selectedValue}
+                />
+                <PickerIOS
+                  selectedValue={this.state.selectedValue}
+                  onValueChange={(selectedValue) => this.setState({selectedValue})}>
+                  {data.map((title,index) => (
+                    <PickerIOS.Item
+                      key={index}
+                      value={title}
+                      label={title}
+                    />
+                  ))}
+                </PickerIOS>
+              </View>
             </View>
-          </View>
-        </Modal>
-      </View>
-    );
-  }
-});
+          </Modal>
+        </View>
+      );
+    }
+  });
 
 
-AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizerApp);
+  AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizerApp);
