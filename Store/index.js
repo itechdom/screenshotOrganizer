@@ -23,7 +23,8 @@ export class ScreenshotOrganizer {
         })
       }),
       getPhotoListIOS:action(()=>{
-        getPhotoListIOS((response)=>{  
+        getPhotoListIOS((response)=>{
+
         },(updateFn)=>{
 
         },()=>{
