@@ -2,7 +2,6 @@ import {extendObservable, observable, computed, autorun, action, reaction, toJS}
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
 
-
 export class ScreenshotOrganizer {
 
   pendingRequestCount = 0;
@@ -13,7 +12,7 @@ export class ScreenshotOrganizer {
       screenshotList : [],
       folderList:[],
       modalVisible:false,
-      selectedIndices:{},
+      selectedPhotos:[],
       testRequest:action(()=>{
         fetch('https://httpbin.org/ip')
         .then((response) => response.json())
@@ -32,9 +31,11 @@ export class ScreenshotOrganizer {
           }
         })
       }),
-      selectScreenshot:action((index,selected)=>{
-        //this.screenshotList[index].selected = selected;
-        this.selectedIndices[index] = selected;
+      selectScreenshot:action((media,index,selected)=>{
+        this.screenshotList[index].selected = selected;
+        // if(selected){
+        //   this.selectedPhotos.push(media.photo);
+        // }
       }),
       toggleModalVisible:action(()=>{
         this.modalVisible = !this.modalVisible;
@@ -48,7 +49,8 @@ export class ScreenshotOrganizer {
           return folderTitle === f.title;
         });
         selectedFolder.screenshotList.clear();
-        selectedFolder.screenshotList.push(...Object.keys(this.selectedIndices));
+        selectedFolder.screenshotList.push(...this.selectedPhotos);
+        this.selectedPhotos.clear();
       }),
       saveFolder:action((folderList)=>{
         return AsyncStorage.setItem('folderList', JSON.stringify(toJS(folderList)));
@@ -80,11 +82,12 @@ export class Folder{
 
 export class Screenshot{
   id;
-  thumb = '';
   photo = '';
-  caption = '';
   selected = false;
-  constructor(id,thumb,photo,caption,selected){
-
+  constructor(id,photo,selected){
+    extendObservable(this, {
+      photo:photo,
+      selected:selected
+    });
   }
 }
