@@ -26,7 +26,15 @@ export class ScreenshotOrganizer {
         getPhotoListIOS((response)=>{
           this.screenshotList.push(...response);
         },(updateFn)=>{
-
+          update(this.screenshotList, (updatedAssetArray) => {
+            this.screenshotList.replace(updatedAssetArray);
+          },
+          //If RNPF needs to retrive more assets to complete the change,
+          //eg. a move happened that moved a previous out of array-index asset into your corrently loaded assets.
+          //Here you can apply a param obj for options on how to load those assets. eg. ´includeMetadata : true´.
+          {
+            includeMetadata : true
+          });
         },()=>{
           //this is full reload
         });
