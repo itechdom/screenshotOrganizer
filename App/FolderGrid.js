@@ -28,7 +28,6 @@ const FolderGrid =  observer(class FolderGrid extends Component {
     let mediaList = [];
     if(this.state.selectedFolder.screenshotList){
       mediaList = this.state.selectedFolder.screenshotList.map(screenshot=>{return{photo:screenshot.photo,selected:screenshot.selected}});
-      console.log(mediaList);
     }
     return (
       (this.state.selectedFolder.title)?
