@@ -25,6 +25,11 @@ const FolderGrid =  observer(class FolderGrid extends Component {
 
   render() {
     let {folderList,screenshotList} = this.props;
+    let mediaList = [];
+    if(this.state.selectedFolder.screenshotList){
+      mediaList = this.state.selectedFolder.screenshotList.map(screenshot=>{return{photo:screenshot.photo,selected:screenshot.selected}});
+      console.log(mediaList);
+    }
     return (
       (this.state.selectedFolder.title)?
       <Content>
@@ -33,13 +38,14 @@ const FolderGrid =  observer(class FolderGrid extends Component {
           <Text>Back</Text>
         </Button>
         <PhotoBrowser
-          mediaList={[]}
+          mediaList={mediaList}
           displayActionButton={true}
           displayTopBar={false}
           renderTopBar={false}
           displaySelectionButtons={true}
           onSelectionChanged={this._onSelectionChanged}
-          enableGrid={false}
+          enableFullScreen={true}
+          startOnGrid={false}
         />
       </Content>
       :<Container>

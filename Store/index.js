@@ -5,17 +5,16 @@ import uuidV4 from 'uuid/v4';
 
 export class ScreenshotOrganizer {
 
-  pendingRequestCount = 0;
-
   constructor() {
     extendObservable(this, {
-      /* See previous listing */
       screenshotList : [],
       folderList:[],
       modalVisible:false,
-      selectedPhotos:[],
       mediaList:computed(()=>{
         return this.screenshotList.slice();
+      }),
+      selectScreenshot:action((media,index,selected)=>{
+        this.screenshotList[index].selected = selected;
       }),
       getPhotoListIOS:action(()=>{
         getPhotoListIOS((response)=>{
@@ -37,12 +36,6 @@ export class ScreenshotOrganizer {
           //this is full reload
         });
       }),
-      selectScreenshot:action((media,index,selected)=>{
-        this.screenshotList[index].selected = selected;
-        // if(selected){
-        //   this.selectedPhotos.push(media.photo);
-        // }
-      }),
       toggleModalVisible:action(()=>{
         this.modalVisible = !this.modalVisible;
       }),
@@ -55,8 +48,8 @@ export class ScreenshotOrganizer {
           return folderTitle === f.title;
         });
         selectedFolder.screenshotList.clear();
-        selectedFolder.screenshotList.push(...this.selectedPhotos);
-        this.selectedPhotos.clear();
+        let selectedPhotos = this.screenshotList.filter(screenshot=>screenshot.selected);
+        selectedFolder.screenshotList.push(...selectedPhotos.slice());
       }),
       saveFolder:action((folderList)=>{
         return AsyncStorage.setItem('folderList', JSON.stringify(toJS(folderList)));

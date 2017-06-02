@@ -13,7 +13,6 @@ const App = observer(class App extends Component {
   }
 
   _onSelectionChanged(media, index, selected){
-    console.log(`${media.photo} selection status: ${selected} index:${index}`);
     this.props.onSelectionChanged(media,index,selected);
   }
 
