@@ -38,9 +38,7 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
 
   constructor(props){
     super(props);
-    ScreenshotOrganizerStore.getFolder().then((res)=>{
-      ScreenshotOrganizerStore.folderList.push(...JSON.parse(res));
-    });
+    ScreenshotOrganizerStore.getFolderList();
     ScreenshotOrganizerStore.getPhotoListIOS();
   }
 
@@ -137,7 +135,7 @@ const MoveModal = observer(class MoveModal extends React.Component {
                     <PickerIOS.Item
                       key={index}
                       value={title}
-                      label={title}
+
                     />
                   ))}
                 </PickerIOS>

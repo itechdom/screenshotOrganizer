@@ -1,5 +1,5 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
-import {getPhotoListIOS} from './PhotoIOS.js';
+import {getScreenshotList, createAlbum, loadAlbums} from './PhotoIOS.js';
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
 
@@ -17,7 +17,7 @@ export class ScreenshotOrganizer {
         this.screenshotList[index].selected = selected;
       }),
       getPhotoListIOS:action(()=>{
-        getPhotoListIOS((response)=>{
+        getScreenshotList((response)=>{
           let screenshotList = response.map((screenshot)=>{
             return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false);
           })
@@ -41,6 +41,7 @@ export class ScreenshotOrganizer {
       }),
       addFolder:action((folderTitle)=>{
         this.folderList.push(new Folder(folderTitle));
+        createAlbum(folderTitle);
         this.saveFolder(this.folderList);
       }),
       addScreenshotListToFolder:action((folderTitle)=>{
@@ -51,18 +52,14 @@ export class ScreenshotOrganizer {
         let selectedPhotos = this.screenshotList.filter(screenshot=>screenshot.selected);
         selectedFolder.screenshotList.push(...selectedPhotos.slice());
       }),
-      saveFolder:action((folderList)=>{
-        return AsyncStorage.setItem('folderList', JSON.stringify(toJS(folderList)));
-      }),
-      getFolder:action(()=>{
-        return new Promise((resolve,reject)=>{
-          AsyncStorage.getItem('folderList', (err, result) => {
-            if(err){
-              return reject(err);
-            }
-            return resolve(result);
-          });
+      getFolderList:action(()=>{
+        loadAlbums().then((albums)=>{
+          let folders = albums.map((album)=>new Folder(album.title));
+          this.folderList.push(...folders);
         });
+      }),
+      getFolderDetails:action(()=>{
+
       })
     })
   }

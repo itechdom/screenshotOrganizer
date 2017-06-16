@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Alert, Text, TextInput, Modal, TouchableHighlight, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native'
 import { Container, Header, Title, Button, Left, Right, Body, Icon } from 'native-base';
 import {observer} from 'mobx-react/native'
-import PhotoBrowser from 'react-native-photo-browser';
+import PhotoBrowser from './react-native-photo-browser/lib/index';
 
 const App = observer(class App extends Component {
 
@@ -30,6 +30,7 @@ const App = observer(class App extends Component {
         displaySelectionButtons={true}
         onSelectionChanged={this._onSelectionChanged}
         enableFullScreen={false}
+        onLoadMore={()=>console.log("loading more from photo browser")}
         startOnGrid={true}
         topBarComponent={topBarComponent}
         onBack={()=>Alert.alert("Back!")}

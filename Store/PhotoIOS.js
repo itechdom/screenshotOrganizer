@@ -1,7 +1,7 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
 import RNPhotosFramework from 'react-native-photos-framework';
 
-export const getPhotoListIOS = (loadFn,updateFn,updateFullFn) => {
+export const getScreenshotList = (loadFn,updateFn,updateFullFn) => {
   RNPhotosFramework.requestAuthorization().then((statusObj) => {
     if (statusObj.isAuthorized) {
       RNPhotosFramework.getAlbums({
@@ -52,4 +52,80 @@ export const getPhotoListIOS = (loadFn,updateFn,updateFullFn) => {
       });
     }
   })
+}
+
+export const createAlbum = (title) => {
+  RNPhotosFramework.createAlbum(`${title}-screenshotorganizer`).then((album) => {
+    return album.getAssets().then((photos) => {});
+  });
+}
+
+export const loadAlbums = ()=>{
+  return RNPhotosFramework.getAlbums({
+    type: 'album',
+    subType: 'any',
+    assetCount: 'exact',
+    fetchOptions: {
+      sortDescriptors : [
+        {
+          key: 'title',
+          ascending: true
+        }
+      ],
+      includeHiddenAssets: false,
+      includeAllBurstAssets: false
+    },
+    //When you say 'trackInsertsAndDeletes or trackChanges' for an albums query result,
+    //They will be cached and tracking will start.
+    //Call queryResult.stopTracking() to stop this. ex. on componentDidUnmount
+    trackInsertsAndDeletes : true,
+    trackChanges : false
+
+  }).then((queryResult) => {
+    const albums = queryResult.albums;
+    let screenshotOrganizerAlbums = albums.filter(album=>album.title.indexOf('screenshotorganizer')!== -1);
+    return screenshotOrganizerAlbums;
+  });
+}
+
+export const getAlbumAssets = (album) => {
+  return album.getAssets({
+    //The fetch-options from the outer query will apply here, if we get
+    startIndex: 0,
+    endIndex: 10,
+    //When you say 'trackInsertsAndDeletes or trackAssetsChange' for an albums assets,
+    //They will be cached and tracking will start.
+    //Call album.stopTracking() to stop this. ex. on componentDidUnmount
+    trackInsertsAndDeletes: false,
+    trackChanges: false
+  }).then((response) => {
+    //console.log("response from lib:",response);
+    return response.assets;
+  });
+}
+
+export const addAssetToAlbum = (asset,album)=>{
+  album.addAssetToAlbum(asset).then(()=>{
+    return;
+  });
+}
+
+export const removeAssetFromAlbum = (asset,album)=>{
+  return album.removeAssetFromAlbum(asset);
+}
+
+export const updateAlbumTitle = (title,album)=>{
+  return album.updateTitle(title);
+}
+
+export const deleteAlbum = (album) => {
+  return album.delete();
+}
+
+export const getAlbumMetadata = (album) => {
+  return album.getMetadata().then((mutatedAlbumWithMetadata) => mutatedAlbumWithMetadata);
+}
+
+export const getAssetMetadata = (asset) => {
+  return asset.getMetadata().then((mutatedAssetWithMetadata) => mutatedAssetWithMetadata);
 }
