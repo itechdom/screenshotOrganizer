@@ -23,6 +23,3 @@ Navigation.startTabBasedApp({
     }
   ]
 });
-
-
-  AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizerApp);
