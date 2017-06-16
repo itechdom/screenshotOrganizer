@@ -13,12 +13,12 @@ Navigation.startTabBasedApp({
   tabs: [
     {
       label: 'One',
-      screen: 'example.FirstTabScreen', // this is a registered name for a screen
+      screen: 'screenshotOrganizer.home', // this is a registered name for a screen
       title: 'Screen One'
     },
     {
       label: 'Two',
-      screen: 'example.SecondTabScreen',
+      screen: 'screenshotOrganizer.folders',
       title: 'Screen Two'
     }
   ]
