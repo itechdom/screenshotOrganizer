@@ -32,12 +32,13 @@ import { Navigation } from 'react-native-navigation';
 
 import {ScreenshotOrganizer,Folder,Screenshot} from './Store';
 
-let ScreenshotOrganizerStore = new ScreenshotOrganizer();
+let ScreenshotOrganizerStore;
 
 const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends React.Component {
 
   constructor(props){
     super(props);
+    ScreenshotOrganizerStore = this.props.store;
     ScreenshotOrganizerStore.getFolderList();
     ScreenshotOrganizerStore.getPhotoListIOS();
   }
@@ -70,20 +71,18 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
           </Button>
         </Right>
       </Header>
-          <PhotoBrowser
-            mediaList={mediaList}
-            mediaList={ScreenshotOrganizerStore.mediaList}
-            displayActionButton={true}
-            renderTopBar={false}
-            displaySelectionButtons={true}
-            onSelectionChanged={(media,index,selected)=>{ScreenshotOrganizerStore.selectScreenshot(media,index,selected)}}
-            enableFullScreen={false}
-            onLoadMore={()=>console.log("loading more from photo browser")}
-            startOnGrid={true}
-            topBarComponent={topBarComponent}
-            onBack={()=>Alert.alert("Back!")}
-          />
-        <FolderGrid screenshotList={ScreenshotOrganizerStore.screenshotList} modalVisible={ScreenshotOrganizerStore.modalVisible} folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
+      <PhotoBrowser
+        mediaList={ScreenshotOrganizerStore.mediaList}
+        displayActionButton={true}
+        renderTopBar={false}
+        displaySelectionButtons={true}
+        onSelectionChanged={(media,index,selected)=>{ScreenshotOrganizerStore.selectScreenshot(media,index,selected)}}
+        enableFullScreen={false}
+        onLoadMore={()=>console.log("loading more from photo browser")}
+        startOnGrid={true}
+        topBarComponent={topBarComponent}
+        onBack={()=>Alert.alert("Back!")}
+      />
     </Container>
   );
 }
@@ -151,4 +150,4 @@ const MoveModal = observer(class MoveModal extends React.Component {
 
 
 
-export default App
+  export default App

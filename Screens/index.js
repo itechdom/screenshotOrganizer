@@ -5,8 +5,8 @@ import FolderGrid from './App/FolderGrid';
 import FolderDetail from './App/FolderDetail';
 
 // register all screens of the app (including internal ones)
-export function registerScreens() {
-  Navigation.registerComponent('screenshotOrganizer.home', () => App);
-  Navigation.registerComponent('screenshotOrganizer.folders', () => FolderGrid);
-  Navigation.registerComponent('screenshotOrganizer.folders-detail', () => FolderDetail);
+export function registerScreens(store) {
+  Navigation.registerComponent('screenshotOrganizer.home', () => App, store);
+  Navigation.registerComponent('screenshotOrganizer.folders', () => FolderGrid, store);
+  Navigation.registerComponent('screenshotOrganizer.folders-detail', () => FolderDetail, store);
 }

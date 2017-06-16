@@ -1,151 +1,32 @@
 'use strict';
 const React = require('react');
 const ReactNative = require('react-native');
-import {
-  CameraRoll,
-  Image,
-  Slider,
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-  TouchableOpacity,
-  AppRegistry,
-  Navigator,
-  Modal,
-  TouchableHighlight,
-  Alert,
-  AlertIOS,
-  PickerIOS,
-  TextInput,
-  NavigatorIOS
-} from 'react-native';
-
-import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs, Footer, FooterTab } from 'native-base';
-
-import {observer} from 'mobx-react/native';
-
 import { Navigation } from 'react-native-navigation';
-
-import {ScreenshotOrganizer,Folder,Screenshot} from './Store';
-
-import App from './App/App.js';
-import FolderGrid from './App/FolderGrid.js';
+import { registerScreens } from './Screens';
 
 let ScreenshotOrganizerStore = new ScreenshotOrganizer();
 
-const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends React.Component {
+registerScreens(ScreenshotOrganizerStore); // this is where you register all of your app's screens
 
-  constructor(props){
-    super(props);
-    ScreenshotOrganizerStore.getFolderList();
-    ScreenshotOrganizerStore.getPhotoListIOS();
-  }
-
-  render() {
-    return (
-      <Container>
-        <MoveModal
-          modalVisible={ScreenshotOrganizerStore.modalVisible}
-          toggleModal={()=>{ScreenshotOrganizerStore.toggleModalVisible()}}
-          folderNames={ScreenshotOrganizerStore.folderList.map(folder=>folder.title)}
-          onSubmit={(folder)=>{console.log(folder)}}
-        />
-        <Header>
-          <Left>
-            <Button onPress={()=>AlertIOS.prompt(
-              'New Folder',
-              null,
-              text => ScreenshotOrganizerStore.addFolder(text)
-            )} transparent>
-            <Icon name='ios-add' />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Screenshot Organizer</Title>
-        </Body>
-        <Right>
-          <Button onPress={()=>ScreenshotOrganizerStore.toggleModalVisible()} transparent>
-            <Text>Move</Text>
-          </Button>
-        </Right>
-      </Header>
-      <Tabs>
-        <Tab heading="All">
-          <App
-            store={ScreenshotOrganizerStore}
-            mediaList={ScreenshotOrganizerStore.mediaList}
-            onSelectionChanged={(media,index,selected)=>{ScreenshotOrganizerStore.selectScreenshot(media,index,selected)}}
-          />
-        </Tab>
-        <Tab heading="Folders">
-          <FolderGrid screenshotList={ScreenshotOrganizerStore.screenshotList} modalVisible={ScreenshotOrganizerStore.modalVisible} folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
-        </Tab>
-      </Tabs>
-    </Container>
-  );
-}
-})
-
-const MoveModal = observer(class MoveModal extends React.Component {
-
-  state = {
-    selectedValue:"",
-    text:""
-  }
-
-  render() {
-    let data = this.props.folderNames;
-    const { query } = this.state;
-    return (
-      <View style={{marginTop: 22}}>
-        <Modal
-          animationType={"slide"}
-          transparent={false}
-          visible={this.props.modalVisible}
-          supportedOrientations={['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right']}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-            <View style={{marginTop: 22}}>
-              <View>
-                <Header>
-                  <Left>
-                    <Button onPress={()=>ScreenshotOrganizerStore.toggleModalVisible()} transparent>
-                      <Text>Cancel</Text>
-                    </Button>
-                  </Left>
-                  <Body>
-                    <Title>Move To Folder</Title>
-                  </Body>
-                  <Right>
-                    <Button onPress={()=>{ScreenshotOrganizerStore.addScreenshotListToFolder(this.state.selectedValue);ScreenshotOrganizerStore.toggleModalVisible()}} transparent>
-                      <Text>Submit</Text>
-                    </Button>
-                  </Right>
-                </Header>
-                <TextInput
-                  style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                  onChangeText={(selectedValue) => this.setState({selectedValue})}
-                  value={this.state.selectedValue}
-                />
-                <PickerIOS
-                  selectedValue={this.state.selectedValue}
-                  onValueChange={(selectedValue) => this.setState({selectedValue})}>
-                  {data.map((title,index) => (
-                    <PickerIOS.Item
-                      key={index}
-                      value={title}
-
-                    />
-                  ))}
-                </PickerIOS>
-              </View>
-            </View>
-          </Modal>
-        </View>
-      );
+// start the app
+Navigation.startTabBasedApp({
+  tabs: [
+    {
+      label: 'One',
+      screen: 'example.FirstTabScreen', // this is a registered name for a screen
+      icon: require('../img/one.png'),
+      selectedIcon: require('../img/one_selected.png'), // iOS only
+      title: 'Screen One'
+    },
+    {
+      label: 'Two',
+      screen: 'example.SecondTabScreen',
+      icon: require('../img/two.png'),
+      selectedIcon: require('../img/two_selected.png'), // iOS only
+      title: 'Screen Two'
     }
-  });
+  ]
+});
 
 
   AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizerApp);
