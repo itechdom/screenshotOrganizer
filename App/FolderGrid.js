@@ -23,6 +23,14 @@ const FolderGrid =  observer(class FolderGrid extends Component {
 
   }
 
+  _pushFolderDetails(){
+    // this would go inside the Component implementation of one of your screens, like FirstTabScreen.js
+    this.props.navigator.push({
+      screen: 'example.PushedScreen',
+      title: 'Pushed Screen'
+    });
+  }
+
   render() {
     let {folderList,screenshotList} = this.props;
     let mediaList = [];
