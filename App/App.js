@@ -1,9 +1,4 @@
 import React, { Component } from 'react'
-import { View, Alert, Text, TextInput, Modal, TouchableHighlight, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native'
-import { Container, Header, Title, Button, Left, Right, Body, Icon } from 'native-base';
-import {observer} from 'mobx-react/native'
-import PhotoBrowser from './react-native-photo-browser/lib/index';
-
 import {
   CameraRoll,
   Image,
@@ -26,11 +21,13 @@ import {
 
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs, Footer, FooterTab } from 'native-base';
 
+import PhotoBrowser from './react-native-photo-browser/lib/index';
+
 import {observer} from 'mobx-react/native';
 
 import { Navigation } from 'react-native-navigation';
 
-import {ScreenshotOrganizer,Folder,Screenshot} from './Store';
+import {ScreenshotOrganizer,Folder,Screenshot} from '../Store';
 
 let ScreenshotOrganizerStore;
 
