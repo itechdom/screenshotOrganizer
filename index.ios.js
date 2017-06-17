@@ -23,8 +23,6 @@ import {
 
 import { Container, Header, Title, Button, Left, Right, Body, Icon, Tab, Tabs, Footer, FooterTab } from 'native-base';
 
-import Autocomplete from 'react-native-autocomplete-input';
-
 import {observer} from 'mobx-react/native';
 
 import {ScreenshotOrganizer,Folder,Screenshot} from './Store';
