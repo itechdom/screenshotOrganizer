@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Container, Content, Card, CardItem, Body, Button, Icon, List, ListItem, Thumbnail, Left, Right } from 'native-base';
 import {Image, Modal, Text, TouchableHighlight, View, Alert, StyleSheet, AlertIOS} from 'react-native';
-import PhotoBrowser from 'react-native-photo-browser';
 import {observer} from 'mobx-react/native'
+import FolderDetail from './FolderDetail';
 
 const FolderGrid =  observer(class FolderGrid extends Component {
 
@@ -13,6 +13,9 @@ const FolderGrid =  observer(class FolderGrid extends Component {
 
   constructor(props){
     super(props);
+    this._onSelectionChanged = this._onSelectionChanged.bind(this);
+    this._onActionButton = this._onActionButton.bind(this);
+    this._onSelectFolder = this._onSelectFolder.bind(this);
   }
 
   _onSelectionChanged(media, index, selected){
@@ -23,38 +26,25 @@ const FolderGrid =  observer(class FolderGrid extends Component {
 
   }
 
+  _onSelectFolder(folder){
+    this.props.navigator.push({
+      component:FolderDetail,
+      passProps: { folder: folder },
+      title:folder.title
+    })
+  }
+
   render() {
     let {folderList,screenshotList} = this.props;
-    let mediaList = [];
-    if(this.state.selectedFolder.screenshotList){
-      mediaList = this.state.selectedFolder.screenshotList.map(screenshot=>{return{photo:screenshot.photo,selected:screenshot.selected}});
-    }
     return (
-      (this.state.selectedFolder.title)?
-      <Content>
-        <Text>{this.state.selectedFolder.title}</Text>
-        <Button onPress={()=>this.setState({selectedFolder:{}})} transparent>
-          <Text>Back</Text>
-        </Button>
-        <PhotoBrowser
-          mediaList={mediaList}
-          displayActionButton={true}
-          displayTopBar={false}
-          renderTopBar={false}
-          displaySelectionButtons={true}
-          onSelectionChanged={this._onSelectionChanged}
-          enableFullScreen={true}
-          startOnGrid={false}
-        />
-      </Content>
-      :<Container>
+      <Container>
         {
           (folderList.length > 0)?
           <Content>
             <List>
               {folderList.map((folder,index)=>{
                 let firstScreenshot = screenshotList[folder.screenshotList[0]];
-                return <ListItem button key={index} onPress={()=>{console.log("hello");this.setState({selectedFolder:folder})}}>
+                return <ListItem button key={index} onPress={()=>{this._onSelectFolder(folder)}}>
                   {/* {
                     (folder.screenshotList.length > 0)?
                     <Image

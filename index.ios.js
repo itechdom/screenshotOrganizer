@@ -77,7 +77,7 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
           />
         </Tab>
         <Tab heading="Folders">
-          <FolderGrid screenshotList={ScreenshotOrganizerStore.screenshotList} modalVisible={ScreenshotOrganizerStore.modalVisible} folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
+          <FolderGrid navigator={this.props.navigator} screenshotList={ScreenshotOrganizerStore.screenshotList} modalVisible={ScreenshotOrganizerStore.modalVisible} folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
         </Tab>
       </Tabs>
     </Container>
@@ -145,5 +145,19 @@ const MoveModal = observer(class MoveModal extends React.Component {
     }
   });
 
+  class NavigatorIOSApp extends React.Component {
+    render() {
+      return (
+        <NavigatorIOS
+          initialRoute={{
+            component: ScreenshotOrganizerApp,
+            title: 'My Initial Scene',
+          }}
+          navigationBarHidden={true}
+          style={{flex: 1}}
+        />
+      );
+    }
+  }
 
-  AppRegistry.registerComponent('screenshotOrganizer', () => ScreenshotOrganizerApp);
+  AppRegistry.registerComponent('screenshotOrganizer', () => NavigatorIOSApp);
