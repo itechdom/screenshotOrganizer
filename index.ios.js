@@ -133,7 +133,7 @@ const MoveModal = observer(class MoveModal extends React.Component {
                     <PickerIOS.Item
                       key={index}
                       value={title}
-
+                      label={title}
                     />
                   ))}
                 </PickerIOS>

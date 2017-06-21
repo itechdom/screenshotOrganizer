@@ -1,5 +1,6 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
 import {getScreenshotList, createAlbum, loadAlbums} from './PhotoIOS.js';
+import {FOLDER_IDENTIFIER} from '../Constants';
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
 
@@ -41,8 +42,7 @@ export class ScreenshotOrganizer {
       }),
       addFolder:action((folderTitle)=>{
         this.folderList.push(new Folder(folderTitle));
-        createAlbum(folderTitle);
-        this.saveFolder(this.folderList);
+        createAlbum(folderTitle+FOLDER_IDENTIFIER);
       }),
       addScreenshotListToFolder:action((folderTitle)=>{
         let selectedFolder = this.folderList.find((f)=>{
@@ -54,7 +54,7 @@ export class ScreenshotOrganizer {
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
-          let folders = albums.map((album)=>new Folder(album.title));
+          let folders = albums.map((album)=>new Folder(album.title.replace(FOLDER_IDENTIFIER,"")));
           this.folderList.push(...folders);
         });
       }),
