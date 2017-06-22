@@ -1,5 +1,5 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
-import {getScreenshotList, createAlbum, loadAlbums, removeAssetFromAlbum, addAssetToAlbum} from './PhotoIOS.js';
+import {getScreenshotList, createAlbum, loadAlbums, removeAssetFromAlbum, addAssetToAlbum, getAlbumAssets} from './PhotoIOS.js';
 import {FOLDER_IDENTIFIER} from '../Constants';
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
@@ -64,8 +64,12 @@ export class ScreenshotOrganizer {
           this.folderList.push(...folders);
         });
       }),
-      getFolderDetails:action(()=>{
-
+      getFolderDetails:action((folder)=>{
+        getAlbumAssets(folder.album).then(assets=>assets.map((asset)=>{
+            let screenshot = new Screenshot(`assets-library://asset/asset.PNG?id=${asset.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,asset);
+            folder.screenshotList.push(screenshot);
+          })
+        );
       })
     })
   }

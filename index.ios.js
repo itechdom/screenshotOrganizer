@@ -77,7 +77,14 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
           />
         </Tab>
         <Tab heading="Folders">
-          <FolderGrid navigator={this.props.navigator} screenshotList={ScreenshotOrganizerStore.screenshotList} modalVisible={ScreenshotOrganizerStore.modalVisible} folderList={ScreenshotOrganizerStore.folderList} onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)} />
+          <FolderGrid
+            navigator={this.props.navigator}
+            screenshotList={ScreenshotOrganizerStore.screenshotList}
+            modalVisible={ScreenshotOrganizerStore.modalVisible}
+            folderList={ScreenshotOrganizerStore.folderList}
+            onFolderCreate={(text)=>ScreenshotOrganizerStore.addFolder(text)}
+            onFolderDetails={(folder)=>ScreenshotOrganizerStore.getFolderDetails(folder)}
+          />
         </Tab>
       </Tabs>
     </Container>

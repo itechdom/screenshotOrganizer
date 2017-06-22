@@ -24,6 +24,7 @@ const FolderGrid =  observer(class FolderGrid extends Component {
 
   _onSelectFolder(folder){
     let navigator = this.props.navigator;
+    this.props.onFolderDetails(folder);
     navigator.push({
       component:FolderDetail,
       passProps: { folder: folder, onBackPress:()=>{navigator.pop()}, onMove:(folder)=>{console.log("Moving",folder)} },

@@ -2,8 +2,9 @@ import React from 'react';
 import { Container, Content, Card, CardItem, Body, Button, Icon, List, ListItem, Thumbnail, Left, Right, Header, Title } from 'native-base';
 import {Image, Modal, Text, TouchableHighlight, View, Alert, StyleSheet, AlertIOS} from 'react-native';
 import PhotoBrowser from 'react-native-photo-browser';
+import {observer} from 'mobx-react/native'
 
-export default class FolderDetail extends React.Component{
+const FolderDetail = observer(class FolderDetail extends React.Component{
   render(){
     let {folder,onBackPress,onMove} = this.props;
     let mediaList = folder.screenshotList.map(screenshot=>{return{photo:screenshot.photo,selected:screenshot.selected}});
@@ -37,4 +38,6 @@ export default class FolderDetail extends React.Component{
       </Content>
     </Container>
   }
-}
+});
+
+export default FolderDetail;
