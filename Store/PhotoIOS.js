@@ -1,7 +1,7 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
 import RNPhotosFramework from 'react-native-photos-framework';
 
-export const getScreenshotList = (loadFn,updateFn,updateFullFn) => {
+export const getScreenshotList = (loadFn,updateFn,updateFullFn,albumFn) => {
   RNPhotosFramework.requestAuthorization().then((statusObj) => {
     if (statusObj.isAuthorized) {
       RNPhotosFramework.getAlbums({
@@ -36,6 +36,7 @@ export const getScreenshotList = (loadFn,updateFn,updateFullFn) => {
             updateFullFn();
           }
         });
+        albumFn(album);
         return album.getAssets({
           //The fetch-options from the outer query will apply here, if we get
           startIndex: 0,
@@ -56,7 +57,7 @@ export const getScreenshotList = (loadFn,updateFn,updateFullFn) => {
 
 export const createAlbum = (title) => {
   RNPhotosFramework.createAlbum(title).then((album) => {
-    return album.getAssets().then((photos) => {});
+    return album;
   });
 }
 
@@ -105,13 +106,13 @@ export const getAlbumAssets = (album) => {
 }
 
 export const addAssetToAlbum = (asset,album)=>{
-  album.addAssetToAlbum(asset).then(()=>{
+  album.addAsset(asset).then(()=>{
     return;
   });
 }
 
 export const removeAssetFromAlbum = (asset,album)=>{
-  return album.removeAssetFromAlbum(asset);
+  return album.removeAsset(asset);
 }
 
 export const updateAlbumTitle = (title,album)=>{

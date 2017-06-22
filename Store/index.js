@@ -1,5 +1,5 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
-import {getScreenshotList, createAlbum, loadAlbums} from './PhotoIOS.js';
+import {getScreenshotList, createAlbum, loadAlbums, removeAssetFromAlbum, addAssetToAlbum} from './PhotoIOS.js';
 import {FOLDER_IDENTIFIER} from '../Constants';
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
@@ -11,6 +11,7 @@ export class ScreenshotOrganizer {
       screenshotList : [],
       folderList:[],
       modalVisible:false,
+      screenshotAlbum:{},
       mediaList:computed(()=>{
         return this.screenshotList.slice();
       }),
@@ -20,7 +21,7 @@ export class ScreenshotOrganizer {
       getPhotoListIOS:action(()=>{
         getScreenshotList((response)=>{
           let screenshotList = response.map((screenshot)=>{
-            return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false);
+            return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,screenshot);
           })
           this.screenshotList.push(...screenshotList);
         },(update)=>{
@@ -35,14 +36,17 @@ export class ScreenshotOrganizer {
           });
         },()=>{
           //this is full reload
+        },(album)=>{
+          //this the album
+          console.log("ALBUMFN",album);
+          this.screenshotAlbum = album;
         });
       }),
       toggleModalVisible:action(()=>{
         this.modalVisible = !this.modalVisible;
       }),
       addFolder:action((folderTitle)=>{
-        this.folderList.push(new Folder(folderTitle));
-        createAlbum(folderTitle+FOLDER_IDENTIFIER);
+        createAlbum(folderTitle+FOLDER_IDENTIFIER).then(album=>this.folderList.push(new Folder(folderTitle),album));
       }),
       addScreenshotListToFolder:action((folderTitle)=>{
         let selectedFolder = this.folderList.find((f)=>{
@@ -50,11 +54,13 @@ export class ScreenshotOrganizer {
         });
         selectedFolder.screenshotList.clear();
         let selectedPhotos = this.screenshotList.filter(screenshot=>screenshot.selected);
+        selectedPhotos.map((screenshot)=>{console.log(screenshot.asset);addAssetToAlbum(screenshot.asset,selectedFolder.album)});
+        selectedPhotos.map((screenshot)=>{console.log(screenshot.asset,this.screenshotAlbum);removeAssetFromAlbum(screenshot.asset,this.screenshotAlbum)});
         selectedFolder.screenshotList.push(...selectedPhotos.slice());
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
-          let folders = albums.map((album)=>new Folder(album.title.replace(FOLDER_IDENTIFIER,"")));
+          let folders = albums.map((album)=>new Folder(album.title.replace(FOLDER_IDENTIFIER,""),album));
           this.folderList.push(...folders);
         });
       }),
@@ -68,10 +74,12 @@ export class ScreenshotOrganizer {
 export class Folder{
   id;
   title;
-  constructor(title,screenshotList=[]){
+  album;
+  constructor(title,album){
+    this.album = album;
     extendObservable(this, {
       title:title,
-      screenshotList:screenshotList
+      screenshotList:[]
     });
   }
 }
@@ -80,7 +88,9 @@ export class Screenshot{
   id;
   photo = '';
   selected = false;
-  constructor(photo,selected){
+  asset;
+  constructor(photo,selected,asset){
+    this.asset = asset;
     extendObservable(this, {
       photo:photo,
       selected:selected
