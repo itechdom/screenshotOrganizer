@@ -54,8 +54,8 @@ export class ScreenshotOrganizer {
         });
         selectedFolder.screenshotList.clear();
         let selectedPhotos = this.screenshotList.filter(screenshot=>screenshot.selected);
-        selectedPhotos.map((screenshot)=>{console.log(screenshot.asset);addAssetToAlbum(screenshot.asset,selectedFolder.album)});
-        selectedPhotos.map((screenshot)=>{console.log(screenshot.asset,this.screenshotAlbum);removeAssetFromAlbum(screenshot.asset,this.screenshotAlbum)});
+        selectedPhotos.map((screenshot)=>{addAssetToAlbum(screenshot.asset,selectedFolder.album)});
+        selectedPhotos.map((screenshot)=>{removeAssetFromAlbum(screenshot.asset,this.screenshotAlbum)});
         selectedFolder.screenshotList.push(...selectedPhotos.slice());
       }),
       getFolderList:action(()=>{

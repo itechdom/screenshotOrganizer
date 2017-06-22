@@ -108,11 +108,17 @@ export const getAlbumAssets = (album) => {
 export const addAssetToAlbum = (asset,album)=>{
   album.addAsset(asset).then(()=>{
     return;
+  }).catch((reason)=>{
+    console.log("ADD ERROR",reason);
   });
 }
 
 export const removeAssetFromAlbum = (asset,album)=>{
-  return album.removeAsset(asset);
+  return album.removeAsset(asset).then((status)=>{
+    return status;
+  }).catch((reason)=>{
+    console.log("REMOVE ERROR!",reason);
+  });
 }
 
 export const updateAlbumTitle = (title,album)=>{
