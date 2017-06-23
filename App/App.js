@@ -33,7 +33,6 @@ const App = observer(class App extends Component {
         enableFullScreen={false}
         onLoadMore={()=>store.getPhotoListIOS()}
         canLoadMore={store.canLoadMore}
-        itemPerRow={2}
         startOnGrid={true}
         topBarComponent={topBarComponent}
         onBack={()=>Alert.alert("Back!")}
