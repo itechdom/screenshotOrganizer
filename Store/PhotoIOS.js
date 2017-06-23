@@ -56,7 +56,7 @@ export const getScreenshotList = (startIndex,endIndex,loadFn,updateFn,updateFull
 }
 
 export const createAlbum = (title) => {
-  RNPhotosFramework.createAlbum(title).then((album) => {
+  return RNPhotosFramework.createAlbum(title).then((album) => {
     return album;
   });
 }
