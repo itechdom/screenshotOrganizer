@@ -1,7 +1,7 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
 import RNPhotosFramework from 'react-native-photos-framework';
 
-export const getScreenshotList = (loadFn,updateFn,updateFullFn,albumFn) => {
+export const getScreenshotList = (startIndex,endIndex,loadFn,updateFn,updateFullFn,albumFn) => {
   RNPhotosFramework.requestAuthorization().then((statusObj) => {
     if (statusObj.isAuthorized) {
       RNPhotosFramework.getAlbums({
@@ -39,8 +39,8 @@ export const getScreenshotList = (loadFn,updateFn,updateFullFn,albumFn) => {
         albumFn(album);
         return album.getAssets({
           //The fetch-options from the outer query will apply here, if we get
-          startIndex: 0,
-          endIndex: 10,
+          startIndex: startIndex,
+          endIndex: endIndex,
           //When you say 'trackInsertsAndDeletes or trackAssetsChange' for an albums assets,
           //They will be cached and tracking will start.
           //Call album.stopTracking() to stop this. ex. on componentDidUnmount

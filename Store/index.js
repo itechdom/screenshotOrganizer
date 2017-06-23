@@ -8,6 +8,9 @@ export class ScreenshotOrganizer {
 
   constructor() {
     extendObservable(this, {
+      itemsPerPage:10,
+      page:-1,
+      canLoadMore:true,
       screenshotList : [],
       folderList:[],
       modalVisible:false,
@@ -19,7 +22,10 @@ export class ScreenshotOrganizer {
         this.screenshotList[index].selected = selected;
       }),
       getPhotoListIOS:action(()=>{
-        getScreenshotList((response)=>{
+        this.page++;
+        let startIndex =  this.page * this.itemsPerPage;
+        let endIndex = (this.page+1)*this.itemsPerPage;
+        getScreenshotList(startIndex, endIndex, (response)=>{
           let screenshotList = response.map((screenshot)=>{
             return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,screenshot);
           })
@@ -57,6 +63,12 @@ export class ScreenshotOrganizer {
         selectedPhotos.map((screenshot)=>{addAssetToAlbum(screenshot.asset,selectedFolder.album)});
         selectedPhotos.map((screenshot)=>{removeAssetFromAlbum(screenshot.asset,this.screenshotAlbum)});
         selectedFolder.screenshotList.push(...selectedPhotos.slice());
+      }),
+      deleteScreenshot:action((screenshot)=>{
+        //add screenshot to local storage
+      }),
+      loadMore:action(()=>{
+        this.page++;
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{

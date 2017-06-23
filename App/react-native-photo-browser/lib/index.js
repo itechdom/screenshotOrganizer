@@ -214,6 +214,8 @@ export default class PhotoBrowser extends React.Component {
       enableFullScreen,
       enableGrid,
       onPhotoTap,
+      onLoadMore,
+      canLoadMore,
       useCircleProgress,
       onActionButton,
       onBack,
@@ -249,6 +251,8 @@ export default class PhotoBrowser extends React.Component {
               dataSource={dataSource}
               displaySelectionButtons={displaySelectionButtons}
               onPhotoTap={(rowId,isSelected)=>{this._onMediaSelection(rowId,isSelected);}}
+              onLoadMore={onLoadMore}
+              canLoadMore={canLoadMore}
               onMediaSelection={this._onMediaSelection}
               itemPerRow={itemPerRow}
             />

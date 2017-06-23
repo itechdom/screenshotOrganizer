@@ -22,6 +22,7 @@ const App = observer(class App extends Component {
   render() {
     let topBarComponent = Text;
     let mediaList = this.props.mediaList;
+    let store = this.props.store;
     return <View style={styles.container}>
       <PhotoBrowser
         mediaList={mediaList}
@@ -30,7 +31,9 @@ const App = observer(class App extends Component {
         displaySelectionButtons={true}
         onSelectionChanged={this._onSelectionChanged}
         enableFullScreen={false}
-        onLoadMore={()=>console.log("loading more from photo browser")}
+        onLoadMore={()=>store.getPhotoListIOS()}
+        canLoadMore={store.canLoadMore}
+        itemPerRow={2}
         startOnGrid={true}
         topBarComponent={topBarComponent}
         onBack={()=>Alert.alert("Back!")}

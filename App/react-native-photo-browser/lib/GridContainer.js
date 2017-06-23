@@ -50,6 +50,8 @@ export default class GridContainer extends React.Component {
       onPhotoTap,
       onMediaSelection,
       itemPerRow,
+      onLoadMore,
+      canLoadMore
     } = this.props;
     const screenWidth = Dimensions.get('window').width;
     const photoWidth = (screenWidth / itemPerRow) - (ITEM_MARGIN * 2);
@@ -76,11 +78,11 @@ export default class GridContainer extends React.Component {
   }
 
   _loadMoreContentAsync = async ()=>{
-    console.log("heyo");
+    this.props.onLoadMore();
   }
 
   render() {
-    const { dataSource } = this.props;
+    const { dataSource, canLoadMore, onLoadMore } = this.props;
 
     return (
       <View style={styles.container}>
@@ -93,7 +95,7 @@ export default class GridContainer extends React.Component {
           scrollRenderAheadDistance={500}
           renderRow={this._renderRow}
           removeClippedSubviews={false}
-          canLoadMore={true}
+          canLoadMore={canLoadMore}
           onLoadMoreAsync={this._loadMoreContentAsync}
         />
       </View>
