@@ -21,6 +21,9 @@ export class ScreenshotOrganizer {
       selectScreenshot:action((media,index,selected)=>{
         this.screenshotList[index].selected = selected;
       }),
+      removeScreenshot:action((screenshot)=>{
+
+      }),
       getPhotoListIOS:action(()=>{
         this.page++;
         let startIndex =  this.page * this.itemsPerPage;
@@ -66,9 +69,6 @@ export class ScreenshotOrganizer {
       }),
       deleteScreenshot:action((screenshot)=>{
         //add screenshot to local storage
-      }),
-      loadMore:action(()=>{
-        this.page++;
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
