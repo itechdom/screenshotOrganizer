@@ -1,5 +1,6 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
 import RNPhotosFramework from 'react-native-photos-framework';
+import {FOLDER_IDENTIFIER} from '../Constants';
 
 export const getScreenshotList = (startIndex,endIndex,loadFn,updateFn,updateFullFn,albumFn) => {
   RNPhotosFramework.requestAuthorization().then((statusObj) => {
@@ -61,6 +62,16 @@ export const createAlbum = (title) => {
   });
 }
 
+export const loadDeletedAlbum = () => {
+  return loadAlbums().then((albums)=>{
+    let deletedAlbum = albums.filter(album => album.title === `deleted${FOLDER_IDENTIFIER}`)[0];
+    if(!deletedAlbum){
+      return createAlbum(`deleted${FOLDER_IDENTIFIER}`);
+    }
+    return deletedAlbum;
+  })
+}
+
 export const loadAlbums = ()=>{
   return RNPhotosFramework.getAlbums({
     type: 'album',
@@ -70,7 +81,7 @@ export const loadAlbums = ()=>{
       sortDescriptors : [
         {
           key: 'title',
-          ascending: true
+          ascending: false
         }
       ],
       includeHiddenAssets: false,
@@ -81,10 +92,9 @@ export const loadAlbums = ()=>{
     //Call queryResult.stopTracking() to stop this. ex. on componentDidUnmount
     trackInsertsAndDeletes : true,
     trackChanges : false
-
   }).then((queryResult) => {
     const albums = queryResult.albums;
-    let screenshotOrganizerAlbums = albums.filter(album=>album.title.indexOf('screenshotorganizer')!== -1);
+    let screenshotOrganizerAlbums = albums.filter(album=>album.title.indexOf(FOLDER_IDENTIFIER)!== -1);
     return screenshotOrganizerAlbums;
   });
 }

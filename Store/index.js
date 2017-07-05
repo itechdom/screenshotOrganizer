@@ -1,5 +1,5 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
-import {getScreenshotList, createAlbum, loadAlbums, removeAssetFromAlbum, addAssetToAlbum, getAlbumAssets} from './PhotoIOS.js';
+import {getScreenshotList, createAlbum, loadAlbums, loadDeletedAlbum, removeAssetFromAlbum, addAssetToAlbum, getAlbumAssets} from './PhotoIOS.js';
 import {FOLDER_IDENTIFIER} from '../Constants';
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
@@ -7,6 +7,9 @@ import uuidV4 from 'uuid/v4';
 export class ScreenshotOrganizer {
 
   constructor() {
+    loadDeletedAlbum().then((deletedAlbum)=>{
+      this.deletedAlbum = deletedAlbum;
+    });
     extendObservable(this, {
       itemsPerPage:10,
       page:-1,
@@ -24,13 +27,16 @@ export class ScreenshotOrganizer {
       removeScreenshot:action((screenshot)=>{
 
       }),
-      getPhotoListIOS:action(()=>{
+      getPhotoListIOS:action(async ()=>{
         this.page++;
         let startIndex =  this.page * this.itemsPerPage;
         let endIndex = (this.page+1)*this.itemsPerPage;
         getScreenshotList(startIndex, endIndex, (response)=>{
           let screenshotList = response.map((screenshot)=>{
             return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,screenshot);
+          }).filter(async (screenshot) =>{
+              const value = await AsyncStorage.getItem(screenshot.asset.localIdentifier);
+              return false;
           })
           this.screenshotList.push(...screenshotList);
         },(update)=>{
@@ -64,11 +70,12 @@ export class ScreenshotOrganizer {
         selectedFolder.screenshotList.clear();
         let selectedPhotos = this.screenshotList.filter(screenshot=>screenshot.selected);
         selectedPhotos.map((screenshot)=>{addAssetToAlbum(screenshot.asset,selectedFolder.album)});
-        selectedPhotos.map((screenshot)=>{removeAssetFromAlbum(screenshot.asset,this.screenshotAlbum)});
+        selectedPhotos.map((screenshot)=>{this.deleteScreenshot(screenshot)});
         selectedFolder.screenshotList.push(...selectedPhotos.slice());
       }),
-      deleteScreenshot:action((screenshot)=>{
-        //add screenshot to local storage
+      deleteScreenshot:action(async(screenshot)=>{
+          await AsyncStorage.setItem(screenshot.asset.localIdentifier, 'deleted');
+          this.screenshotList.remove(screenshot);
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
@@ -78,13 +85,13 @@ export class ScreenshotOrganizer {
       }),
       getFolderDetails:action((folder)=>{
         getAlbumAssets(folder.album).then(assets=>assets.map((asset)=>{
-            let screenshot = new Screenshot(`assets-library://asset/asset.PNG?id=${asset.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,asset);
-            folder.screenshotList.push(screenshot);
-          })
-        );
-      })
+          let screenshot = new Screenshot(`assets-library://asset/asset.PNG?id=${asset.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,asset);
+          folder.screenshotList.push(screenshot);
+        })
+      );
     })
-  }
+  })
+}
 }
 
 export class Folder{
