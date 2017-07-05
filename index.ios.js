@@ -128,11 +128,11 @@ const MoveModal = observer(class MoveModal extends React.Component {
                     </Button>
                   </Right>
                 </Header>
-                <TextInput
+                {/* <TextInput
                   style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                   onChangeText={(selectedValue) => this.setState({selectedValue})}
                   value={this.state.selectedValue}
-                />
+                /> */}
                 <PickerIOS
                   selectedValue={this.state.selectedValue}
                   onValueChange={(selectedValue) => this.setState({selectedValue})}>
