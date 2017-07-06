@@ -27,16 +27,13 @@ export class ScreenshotOrganizer {
       removeScreenshot:action((screenshot)=>{
 
       }),
-      getPhotoListIOS:action(async ()=>{
+      getPhotoListIOS:action(()=>{
         this.page++;
         let startIndex =  this.page * this.itemsPerPage;
         let endIndex = (this.page+1)*this.itemsPerPage;
         getScreenshotList(startIndex, endIndex, (response)=>{
           let screenshotList = response.map((screenshot)=>{
             return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,screenshot);
-          }).filter(async (screenshot) =>{
-              const value = await AsyncStorage.getItem(screenshot.asset.localIdentifier);
-              return false;
           })
           this.screenshotList.push(...screenshotList);
         },(update)=>{
@@ -53,7 +50,6 @@ export class ScreenshotOrganizer {
           //this is full reload
         },(album)=>{
           //this the album
-          console.log("ALBUMFN",album);
           this.screenshotAlbum = album;
         });
       }),
@@ -70,12 +66,11 @@ export class ScreenshotOrganizer {
         selectedFolder.screenshotList.clear();
         let selectedPhotos = this.screenshotList.filter(screenshot=>screenshot.selected);
         selectedPhotos.map((screenshot)=>{addAssetToAlbum(screenshot.asset,selectedFolder.album)});
-        selectedPhotos.map((screenshot)=>{this.deleteScreenshot(screenshot)});
+        selectedPhotos.map((screenshot)=>{this.screenshotList.remove(screenshot);this.deleteScreenshot(screenshot)});
         selectedFolder.screenshotList.push(...selectedPhotos.slice());
       }),
-      deleteScreenshot:action(async(screenshot)=>{
-          await AsyncStorage.setItem(screenshot.asset.localIdentifier, 'deleted');
-          this.screenshotList.remove(screenshot);
+      deleteScreenshot:action((screenshot)=>{
+          // await AsyncStorage.setItem(screenshot.asset.localIdentifier, 'deleted');
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
