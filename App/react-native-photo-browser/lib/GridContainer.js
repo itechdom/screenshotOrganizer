@@ -55,9 +55,11 @@ export default class GridContainer extends React.Component {
     } = this.props;
     const screenWidth = Dimensions.get('window').width;
     const photoWidth = (screenWidth / itemPerRow) - (ITEM_MARGIN * 2);
-
+    if(media.deleted){
+      return null;
+    }
     return (
-      <TouchableHighlight onPress={() => onPhotoTap(rowID,!media.selected)}>
+      <TouchableHighlight key={rowID} onPress={() => onPhotoTap(rowID,!media.selected)}>
         <View style={styles.row}>
           <Photo
             width={photoWidth}

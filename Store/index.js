@@ -66,7 +66,7 @@ export class ScreenshotOrganizer {
         selectedFolder.screenshotList.clear();
         let selectedPhotos = this.screenshotList.filter(screenshot=>screenshot.selected);
         selectedPhotos.map((screenshot)=>{addAssetToAlbum(screenshot.asset,selectedFolder.album)});
-        selectedPhotos.map((screenshot)=>{this.screenshotList.remove(screenshot);this.deleteScreenshot(screenshot)});
+        selectedPhotos.map((screenshot)=>{screenshot.deleted = true;this.deleteScreenshot(screenshot)});
         selectedFolder.screenshotList.push(...selectedPhotos.slice());
       }),
       deleteScreenshot:action((screenshot)=>{
@@ -107,8 +107,10 @@ export class Screenshot{
   photo = '';
   selected = false;
   asset;
+  deleted;
   constructor(photo,selected,asset){
     this.asset = asset;
+    this.deleted = false;
     extendObservable(this, {
       photo:photo,
       selected:selected
