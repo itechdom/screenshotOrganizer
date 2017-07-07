@@ -1,15 +1,12 @@
 import {extendObservable, observable, computed, autorun, action, reaction, toJS} from 'mobx';
 import {getScreenshotList, createAlbum, loadAlbums, loadDeletedAlbum, removeAssetFromAlbum, addAssetToAlbum, getAlbumAssets} from './PhotoIOS.js';
-import {FOLDER_IDENTIFIER} from '../Constants';
+import {FOLDER_IDENTIFIER, DELETED_KEY} from '../Constants';
 import {AsyncStorage} from 'react-native';
 import uuidV4 from 'uuid/v4';
 
 export class ScreenshotOrganizer {
 
   constructor() {
-    loadDeletedAlbum().then((deletedAlbum)=>{
-      this.deletedAlbum = deletedAlbum;
-    });
     extendObservable(this, {
       itemsPerPage:10,
       page:-1,
@@ -18,14 +15,17 @@ export class ScreenshotOrganizer {
       folderList:[],
       modalVisible:false,
       screenshotAlbum:{},
+      deletedScreenshotList:[],
       mediaList:computed(()=>{
         return this.screenshotList.slice();
       }),
+      init:action(async ()=>{
+        let deletedScreenshotList = await this.getDeletedScreenshots();
+        console.log(deletedScreenshotList);
+        this.deletedScreenshotList.push(...deletedScreenshotList);
+      }),
       selectScreenshot:action((media,index,selected)=>{
         this.screenshotList[index].selected = selected;
-      }),
-      removeScreenshot:action((screenshot)=>{
-
       }),
       getPhotoListIOS:action(()=>{
         this.page++;
@@ -34,6 +34,10 @@ export class ScreenshotOrganizer {
         getScreenshotList(startIndex, endIndex, (response)=>{
           let screenshotList = response.map((screenshot)=>{
             return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,screenshot);
+          }).filter((screenshot)=>{
+            let deleted = this.deletedScreenshotList.find((localIdentifier)=>{localIdentifier === screenshot.asset.localIdentifier});
+            console.log("index of deleted file",deleted)
+            return true;
           })
           this.screenshotList.push(...screenshotList);
         },(update)=>{
@@ -66,11 +70,12 @@ export class ScreenshotOrganizer {
         selectedFolder.screenshotList.clear();
         let selectedPhotos = this.screenshotList.filter(screenshot=>screenshot.selected);
         selectedPhotos.map((screenshot)=>{addAssetToAlbum(screenshot.asset,selectedFolder.album)});
-        selectedPhotos.map((screenshot)=>{screenshot.deleted = true;this.deleteScreenshot(screenshot)});
+        selectedPhotos.map((screenshot)=>{this.deleteScreenshot(screenshot)});
         selectedFolder.screenshotList.push(...selectedPhotos.slice());
       }),
-      deleteScreenshot:action((screenshot)=>{
-          // await AsyncStorage.setItem(screenshot.asset.localIdentifier, 'deleted');
+      deleteScreenshot:action(async (screenshot)=>{
+        screenshot.deleted = true;
+        this.saveDeletedScreenshot(screenshot);
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
@@ -84,6 +89,30 @@ export class ScreenshotOrganizer {
           folder.screenshotList.push(screenshot);
         })
       );
+    }),
+    getDeletedScreenshots:action(async () => {
+      try {
+        const value = await AsyncStorage.getItem(DELETED_KEY);
+        console.log(value);
+        if (value !== null){
+          return JSON.parse(value);
+        }
+        else{
+          return [];
+        }
+      } catch (error) {
+        // Error retrieving data
+      }
+    }),
+    saveDeletedScreenshot:action(async (screenshot) => {
+      try {
+        let screenshotList = await this.getDeletedScreenshots();
+        screenshotList.push(screenshot.asset.localIdentifier);
+        let deleted = await AsyncStorage.setItem(DELETED_KEY, JSON.stringify(screenshotList));
+      } catch (error) {
+        // Error saving data
+        console.log("ERROR setting deleted");
+      }
     })
   })
 }

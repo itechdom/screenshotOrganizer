@@ -36,6 +36,7 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
 
   constructor(props){
     super(props);
+    ScreenshotOrganizerStore.init();
     ScreenshotOrganizerStore.getFolderList();
     ScreenshotOrganizerStore.getPhotoListIOS();
   }
