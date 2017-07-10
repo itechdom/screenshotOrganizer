@@ -21,7 +21,6 @@ export class ScreenshotOrganizer {
       }),
       init:action(async ()=>{
         let deletedScreenshotList = await this.getDeletedScreenshots();
-        console.log(deletedScreenshotList);
         this.deletedScreenshotList.push(...deletedScreenshotList);
       }),
       selectScreenshot:action((media,index,selected)=>{
@@ -35,9 +34,8 @@ export class ScreenshotOrganizer {
           let screenshotList = response.map((screenshot)=>{
             return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,screenshot);
           }).filter((screenshot)=>{
-            let deleted = this.deletedScreenshotList.find((localIdentifier)=>{localIdentifier === screenshot.asset.localIdentifier});
-            console.log("index of deleted file",deleted)
-            return true;
+            let deleted = this.deletedScreenshotList.find((localIdentifier)=>{return localIdentifier === screenshot.asset.localIdentifier});
+            return deleted === undefined;
           })
           this.screenshotList.push(...screenshotList);
         },(update)=>{
@@ -75,7 +73,7 @@ export class ScreenshotOrganizer {
       }),
       deleteScreenshot:action(async (screenshot)=>{
         screenshot.deleted = true;
-        this.saveDeletedScreenshot(screenshot);
+        let deleted = await this.saveDeletedScreenshot(screenshot);
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
@@ -92,10 +90,9 @@ export class ScreenshotOrganizer {
     }),
     getDeletedScreenshots:action(async () => {
       try {
-        const value = await AsyncStorage.getItem(DELETED_KEY);
-        console.log(value);
+        const value = await AsyncStorage.getAllKeys();
         if (value !== null){
-          return JSON.parse(value);
+          return value
         }
         else{
           return [];
@@ -106,9 +103,7 @@ export class ScreenshotOrganizer {
     }),
     saveDeletedScreenshot:action(async (screenshot) => {
       try {
-        let screenshotList = await this.getDeletedScreenshots();
-        screenshotList.push(screenshot.asset.localIdentifier);
-        let deleted = await AsyncStorage.setItem(DELETED_KEY, JSON.stringify(screenshotList));
+        let deleted = await AsyncStorage.setItem(screenshot.asset.localIdentifier, JSON.stringify(screenshot));
       } catch (error) {
         // Error saving data
         console.log("ERROR setting deleted");
