@@ -11,6 +11,7 @@ export class ScreenshotOrganizer {
       itemsPerPage:10,
       page:-1,
       canLoadMore:true,
+      originalScreenshotList:[],
       screenshotList : [],
       folderList:[],
       modalVisible:false,
@@ -26,21 +27,33 @@ export class ScreenshotOrganizer {
       selectScreenshot:action((media,index,selected)=>{
         this.screenshotList[index].selected = selected;
       }),
+      saveOriginalScreenshotList:action((screenshotList)=>{
+        if(this.originalScreenshotList.length === 0){
+          this.originalScreenshotList = screenshotList;
+        }
+      }),
+      processScreenshotList:action((screenshotList)=>{
+        return screenshotList.map((screenshot)=>{
+          return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,screenshot);
+        }).map((screenshot)=>{
+          let deleted = this.deletedScreenshotList.find((localIdentifier)=>{return localIdentifier === screenshot.asset.localIdentifier});
+          screenshot.deleted = !!deleted;
+          return screenshot;
+        });
+      }),
       getPhotoListIOS:action(()=>{
         this.page++;
         let startIndex =  this.page * this.itemsPerPage;
         let endIndex = (this.page+1)*this.itemsPerPage;
         getScreenshotList(startIndex, endIndex, (response)=>{
-          let screenshotList = response.map((screenshot)=>{
-            return new Screenshot(`assets-library://asset/asset.PNG?id=${screenshot.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,screenshot);
-          }).filter((screenshot)=>{
-            let deleted = this.deletedScreenshotList.find((localIdentifier)=>{return localIdentifier === screenshot.asset.localIdentifier});
-            return deleted === undefined;
-          })
+          console.log("FETCHING MORE ...",response);
+          let screenshotList = this.processScreenshotList(response);
           this.screenshotList.push(...screenshotList);
         },(update)=>{
-          update(this.screenshotList, (updatedAssetArray) => {
-            this.screenshotList.replace(updatedAssetArray);
+          update(this.screenshotList.map(screenshot=>screenshot.asset), (response) => {
+            let screenshotList = this.processScreenshotList(response);
+            this.screenshotList.clear();
+            this.screenshotList.push(...screenshotList);
           },
           //If RNPF needs to retrive more assets to complete the change,
           //eg. a move happened that moved a previous out of array-index asset into your corrently loaded assets.
