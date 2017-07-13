@@ -80,6 +80,7 @@ export const loadAlbums = ()=>{
   return RNPhotosFramework.getAlbums({
     type: 'album',
     subType: 'any',
+    previewAssets:1,
     assetCount: 'exact',
     fetchOptions: {
       sortDescriptors : [

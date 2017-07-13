@@ -100,8 +100,14 @@ export class ScreenshotOrganizer {
       }),
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
-          let folders = albums.map((album)=>new Folder(album.title.replace(FOLDER_IDENTIFIER,""),album));
-          this.folderList.push(...folders);
+          let folderList = albums.map((album)=>new Folder(album.title.replace(FOLDER_IDENTIFIER,""),album));
+          this.folderList.push(...folderList);
+          folderList.map(folder=>{
+            if(folder.album.previewAsset){
+              folder.thumbnail = `assets-library://asset/asset.PNG?id=${folder.album.previewAsset.localIdentifier.replace("/L0/001","")}&ext=PNG`;
+            }
+            this.getFolderDetails(folder);
+          })
         });
       }),
       getFolderDetails:action((folder)=>{
@@ -141,11 +147,13 @@ export class Folder{
   id;
   title;
   album;
+  thumbnail;
   constructor(title,album){
     this.album = album;
     extendObservable(this, {
       title:title,
-      screenshotList:[]
+      screenshotList:[],
+      thumbnail:undefined
     });
   }
 }

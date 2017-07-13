@@ -42,46 +42,48 @@ const FolderGrid =  observer(class FolderGrid extends Component {
             <List>
               {folderList.map((folder,index)=>{
                 return <ListItem button key={index} onPress={()=>{this._onSelectFolder(folder)}}>
-                <Thumbnail square size={80} source={require('../img/empty-box.png')} />
-                <Body>
-                  <Text>{folder.title}</Text>
-                  <Text note>{folder.screenshotList.length} Photos</Text>
-                </Body>
-                <Right>
-                  <Icon name="arrow-forward" />
-                </Right>
-              </ListItem>
-            })}</List></Content>:<Container style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop:50
-            }}>
-            <Button onPress={()=>AlertIOS.prompt(
-              'New Folder',
-              null,
-              text => this.props.onFolderCreate(text)
-            )}><Text>Create Folder</Text></Button>
+                  {
+                    (folder.thumbnail)?<Thumbnail square style={{flex: 1,width: 50,height: 50,resizeMode: 'contain'}} size={80} source={{uri:folder.thumbnail}} />:<Thumbnail square size={80} source={require('../img/empty-box.png')} />
+                    }
+                    <Body>
+                      <Text>{folder.title}</Text>
+                      <Text note>{folder.screenshotList.length} Photos</Text>
+                    </Body>
+                    <Right>
+                      <Icon name="arrow-forward" />
+                    </Right>
+                  </ListItem>
+                })}</List></Content>:<Container style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  marginTop:50
+                }}>
+                <Button onPress={()=>AlertIOS.prompt(
+                  'New Folder',
+                  null,
+                  text => this.props.onFolderCreate(text)
+                )}><Text>Create Folder</Text></Button>
+              </Container>
+            }
           </Container>
-        }
-      </Container>
-    );
-  }
-});
+        );
+      }
+    });
 
-const styles = StyleSheet.create({
-  column:{
-    flexDirection:'column'
-  },
-  row: {
-    flexDirection:'row',
-    justifyContent:'center'
-  },
-  image: {
-    margin: 4,
-    width:100,
-    height:100
-  }
-});
+    const styles = StyleSheet.create({
+      column:{
+        flexDirection:'column'
+      },
+      row: {
+        flexDirection:'row',
+        justifyContent:'center'
+      },
+      image: {
+        margin: 4,
+        width:100,
+        height:100
+      }
+    });
 
-export default FolderGrid;
+    export default FolderGrid;
