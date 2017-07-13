@@ -43,7 +43,7 @@ const FolderGrid =  observer(class FolderGrid extends Component {
               {folderList.map((folder,index)=>{
                 return <ListItem button key={index} onPress={()=>{this._onSelectFolder(folder)}}>
                   {
-                    (folder.thumbnail)?<Thumbnail square style={{flex: 1,width: 50,height: 50,resizeMode: 'contain'}} size={80} source={{uri:folder.thumbnail}} />:<Thumbnail square size={80} source={require('../img/empty-box.png')} />
+                    (folder.thumbnail)?<Thumbnail square style={{width: 50,height: 50,resizeMode: 'contain'}} size={80} source={{uri:folder.thumbnail}} />:<Thumbnail square size={80} source={require('../img/empty-box.png')} />
                     }
                     <Body>
                       <Text>{folder.title}</Text>
