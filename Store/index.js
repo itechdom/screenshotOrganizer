@@ -96,6 +96,7 @@ export class ScreenshotOrganizer {
       }),
       deleteScreenshot:action(async (screenshot)=>{
         screenshot.deleted = true;
+        screenshot.selected = false;
         let deleted = await this.saveDeletedScreenshot(screenshot);
       }),
       getFolderList:action(()=>{
