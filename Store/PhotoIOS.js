@@ -28,16 +28,20 @@ export const getScreenshotList = (startIndex,endIndex,loadFn,updateFn,updateFull
 
       }).then((queryResult) => {
         const album = queryResult.albums[0];
-        const unsubscribeFunc = album.onChange((changeDetails, update) => {
-          if(changeDetails.hasIncrementalChanges) {
-            //Important! Assets must be supplied in original fetch-order.
-            updateFn(update);
-          }else {
-            //Do full reload here..
-            updateFullFn();
-          }
-        });
-        albumFn(album);
+        if(updateFn){
+          const unsubscribeFunc = album.onChange((changeDetails, update) => {
+            if(changeDetails.hasIncrementalChanges) {
+              //Important! Assets must be supplied in original fetch-order.
+              updateFn(update);
+            }else {
+              //Do full reload here..
+              updateFullFn();
+            }
+          });
+        }
+        if(albumFn){
+          albumFn(album);
+        }
         return album.getAssets({
           //The fetch-options from the outer query will apply here, if we get
           startIndex: startIndex,

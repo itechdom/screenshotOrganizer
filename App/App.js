@@ -31,7 +31,7 @@ const App = observer(class App extends Component {
         displaySelectionButtons={true}
         onSelectionChanged={this._onSelectionChanged}
         enableFullScreen={false}
-        onLoadMore={()=>store.getPhotoListIOS()}
+        onLoadMore={()=>store.getNextPhotoListIOS()}
         canLoadMore={store.canLoadMore}
         startOnGrid={true}
         topBarComponent={topBarComponent}

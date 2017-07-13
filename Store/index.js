@@ -9,7 +9,7 @@ export class ScreenshotOrganizer {
   constructor() {
     extendObservable(this, {
       itemsPerPage:10,
-      page:-1,
+      page:0,
       canLoadMore:true,
       originalScreenshotList:[],
       screenshotList : [],
@@ -41,10 +41,20 @@ export class ScreenshotOrganizer {
           return screenshot;
         });
       }),
-      getPhotoListIOS:action(()=>{
+      getNextPhotoListIOS:action(()=>{
         this.page++;
         let startIndex =  this.page * this.itemsPerPage;
-        let endIndex = (this.page+1)*this.itemsPerPage;
+        let endIndex = ((this.page+1)*this.itemsPerPage) - 1;
+        getScreenshotList(startIndex, endIndex, (response)=>{
+          console.log("FETCHING NEXT ...",response);
+          let screenshotList = this.processScreenshotList(response);
+          console.log("screenshotList next",screenshotList);
+          this.screenshotList.push(...screenshotList);
+        });
+      }),
+      getPhotoListIOS:action(()=>{
+        let startIndex = this.page * this.itemsPerPage;
+        let endIndex = ((this.page+1)*this.itemsPerPage) - 1;
         getScreenshotList(startIndex, endIndex, (response)=>{
           console.log("FETCHING MORE ...",response);
           let screenshotList = this.processScreenshotList(response);
@@ -95,6 +105,7 @@ export class ScreenshotOrganizer {
         });
       }),
       getFolderDetails:action((folder)=>{
+        folder.screenshotList.clear();
         getAlbumAssets(folder.album).then(assets=>assets.map((asset)=>{
           let screenshot = new Screenshot(`assets-library://asset/asset.PNG?id=${asset.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,asset);
           folder.screenshotList.push(screenshot);
