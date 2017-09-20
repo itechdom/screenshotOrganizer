@@ -34,7 +34,9 @@ export class ScreenshotOrganizer {
       }),
       processScreenshotList:action((screenshotList)=>{
         return screenshotList.map((screenshot)=>{
-          return new Screenshot(screenshot.localIdentifier,false,screenshot);
+          console.log(screenshot);
+          console.log("hello");
+          return new Screenshot(screenshot.localIdentifier.replace("/L0/001",""),false,screenshot);
         }).map((screenshot)=>{
           let deleted = this.deletedScreenshotList.find((localIdentifier)=>{return localIdentifier === screenshot.asset.localIdentifier});
           screenshot.deleted = !!deleted;
