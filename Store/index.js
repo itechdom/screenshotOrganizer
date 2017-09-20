@@ -105,7 +105,7 @@ export class ScreenshotOrganizer {
           this.folderList.push(...folderList);
           folderList.map(folder=>{
             if(folder.album.previewAsset){
-              folder.thumbnail = `assets-library://asset/asset.PNG?id=${folder.album.previewAsset.localIdentifier.replace("/L0/001","")}&ext=PNG`;
+              folder.thumbnail = folder.album.previewAsset;
             }
             this.getFolderDetails(folder);
           })
