@@ -7,7 +7,7 @@ import {observer} from 'mobx-react/native'
 const FolderDetail = observer(class FolderDetail extends React.Component{
   render(){
     let {folder,onBackPress,onMove} = this.props;
-    let mediaList = folder.screenshotList.map(screenshot=>{return{photo:screenshot.photo,selected:screenshot.selected}});
+    let mediaList = folder.screenshotList.map(screenshot=>{console.log(screenshot);return{photo:screenshot.photo,selected:screenshot.selected}});
     return <Container>
       <Header>
         <Left>

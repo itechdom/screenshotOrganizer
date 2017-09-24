@@ -105,7 +105,7 @@ export class ScreenshotOrganizer {
           this.folderList.push(...folderList);
           folderList.map(folder=>{
             if(folder.album.previewAsset){
-              folder.thumbnail = folder.album.previewAsset;
+              folder.thumbnail = folder.album.previewAsset.image;
             }
             this.getFolderDetails(folder);
           })
@@ -114,7 +114,7 @@ export class ScreenshotOrganizer {
       getFolderDetails:action((folder)=>{
         folder.screenshotList.clear();
         getAlbumAssets(folder.album).then(assets=>assets.map((asset)=>{
-          let screenshot = new Screenshot(`assets-library://asset/asset.PNG?id=${asset.localIdentifier.replace("/L0/001","")}&ext=PNG`,false,asset);
+          let screenshot = new Screenshot(asset.image,false,asset);
           folder.screenshotList.push(screenshot);
         })
       );

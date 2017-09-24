@@ -61,7 +61,7 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
           </Button>
         </Left>
         <Body>
-          <Title>Screenshot Organizer</Title>
+          <Title>Home</Title>
         </Body>
         <Right>
           <Button onPress={()=>ScreenshotOrganizerStore.toggleModalVisible()} transparent>
@@ -129,11 +129,6 @@ const MoveModal = observer(class MoveModal extends React.Component {
                     </Button>
                   </Right>
                 </Header>
-                {/* <TextInput
-                  style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                  onChangeText={(selectedValue) => this.setState({selectedValue})}
-                  value={this.state.selectedValue}
-                /> */}
                 <PickerIOS
                   selectedValue={this.state.selectedValue}
                   onValueChange={(selectedValue) => this.setState({selectedValue})}>
