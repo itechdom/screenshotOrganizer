@@ -109,7 +109,7 @@ export default class GridContainer extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: Constants.TOOLBAR_HEIGHT,
+    paddingBottom: 180,
   },
   list: {
     justifyContent: 'flex-start',

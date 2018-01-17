@@ -13,6 +13,7 @@ export class ScreenshotOrganizer {
       canLoadMore:true,
       originalScreenshotList:[],
       screenshotList : [],
+      previewedImage:{},
       folderList:[],
       modalVisible:false,
       screenshotAlbum:{},
