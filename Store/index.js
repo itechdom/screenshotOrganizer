@@ -83,7 +83,9 @@ export class ScreenshotOrganizer {
         this.modalVisible = !this.modalVisible;
       }),
       addFolder:action((folderTitle)=>{
-        createAlbum(folderTitle+FOLDER_IDENTIFIER).then(album=>this.folderList.push(new Folder(folderTitle),album));
+        createAlbum(folderTitle+FOLDER_IDENTIFIER).then((album)=>{
+          this.folderList.push(new Folder(folderTitle),album)
+        });
       }),
       addScreenshotListToFolder:action((folderTitle)=>{
         let selectedFolder = this.folderList.find((f)=>{
@@ -103,8 +105,10 @@ export class ScreenshotOrganizer {
       getFolderList:action(()=>{
         loadAlbums().then((albums)=>{
           let folderList = albums.map((album)=>new Folder(album.title.replace(FOLDER_IDENTIFIER,""),album));
-          this.folderList.push(...folderList);
-          folderList.map(folder=>{
+          folderList.map((folder)=>{
+            if(!this.folderList.includes(folder)){
+              this.folderList.push(folder);
+            }
             if(folder.album.previewAsset){
               folder.thumbnail = folder.album.previewAsset.image;
             }
