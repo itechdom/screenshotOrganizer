@@ -54,13 +54,14 @@ export default class GridContainer extends React.Component {
       canLoadMore,
       onLongPress
     } = this.props;
+    let _onLongPress = onLongPress;
     const screenWidth = Dimensions.get('window').width;
     const photoWidth = (screenWidth / itemPerRow) - (ITEM_MARGIN * 2);
     if(media.deleted){
       return null;
     }
     return (
-      <TouchableHighlight key={rowID} onLongPress={onLongPress} onPress={() => onPhotoTap(rowID,!media.selected)}>
+      <TouchableHighlight key={rowID} onLongPress={()=>_onLongPress(media)} onPress={() => onPhotoTap(rowID,!media.selected)}>
         <View style={styles.row}>
           <Photo
             width={photoWidth}
@@ -86,7 +87,6 @@ export default class GridContainer extends React.Component {
 
   render() {
     const { dataSource, canLoadMore, onLoadMore, onLongPress } = this.props;
-
     return (
       <View style={styles.container}>
         <ListView

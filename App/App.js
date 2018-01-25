@@ -10,6 +10,7 @@ const App = observer(class App extends Component {
     super(props);
     this._onSelectionChanged = this._onSelectionChanged.bind(this);
     this._onActionButton = this._onActionButton.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
 
   _onSelectionChanged(media, index, selected) {
@@ -19,35 +20,16 @@ const App = observer(class App extends Component {
   _onActionButton(media, index) {
   }
 
-  openModal() {
-    this.props.onOpenModal();
+  openModal(media) {
+    this.props.onOpenModal(media);
   }
 
-  closeModal() {
-    this.props.onCloseModal();
-  }
 
   render() {
     let topBarComponent = Text;
     let mediaList = this.props.mediaList;
     let store = this.props.store;
     return <View style={styles.container}>
-      <Modal
-        visible={this.props.modalVisible}
-        animationType={'slide'}
-        onRequestClose={() => this.closeModal()}
-      >
-        <View>
-          <View>
-            <Text>This is content inside of modal component</Text>
-            <Button
-              onPress={() => this.closeModal()}
-              title="Close modal"
-            >
-            </Button>
-          </View>
-        </View>
-      </Modal>
       <PhotoBrowser
         mediaList={mediaList}
         displayActionButton={true}
