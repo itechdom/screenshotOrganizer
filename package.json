@@ -12,7 +12,6 @@
     "native-base": "2.1.2",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.2",
-    "react-native-easy-grid": "^0.1.13",
     "react-native-infinite-scroll-view": "^0.4.3",
     "react-native-photo-browser": "github:itechdom/react-native-photo-browser",
     "react-native-photos-framework": "^1.0.3",

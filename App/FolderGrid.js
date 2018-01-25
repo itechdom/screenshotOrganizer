@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Container, Content, Card, CardItem, Body, Button, Icon, List, ListItem, Thumbnail, Left, Right, Header } from 'native-base';
 import {Image, Modal, Text, TouchableHighlight, View, Alert, StyleSheet, AlertIOS} from 'react-native';
 import {observer} from 'mobx-react/native'
