@@ -16,6 +16,7 @@ export class ScreenshotOrganizer {
       previewedImage:{},
       folderList:[],
       modalVisible:false,
+      photoPreviewOpen:false,
       screenshotAlbum:{},
       deletedScreenshotList:[],
       mediaList:computed(()=>{

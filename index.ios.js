@@ -75,6 +75,9 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
             store={ScreenshotOrganizerStore}
             mediaList={ScreenshotOrganizerStore.mediaList}
             onSelectionChanged={(media,index,selected)=>{ScreenshotOrganizerStore.selectScreenshot(media,index,selected)}}
+            onOpenModal={()=>console.log("On open modal")}
+            onCloseModal={()=>console.log("ON close modal")}
+            modalVisible={ScreenshotOrganizerStore.photoPreviewOpen}
           />
         </Tab>
         <Tab heading="Folders">
