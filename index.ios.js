@@ -129,6 +129,7 @@ const ScreenshotOrganizerApp = observer(class ScreenshotOrganizerApp extends Rea
               navigator={this.props.navigator}
               screenshotList={ScreenshotOrganizerStore.screenshotList}
               modalVisible={ScreenshotOrganizerStore.modalVisible}
+              onSelectionChanged={(media, index, selected) => { ScreenshotOrganizerStore.selectScreenshot(media, index, selected) }}
               folderList={ScreenshotOrganizerStore.folderList}
               onFolderCreate={(text) => ScreenshotOrganizerStore.addFolder(text)}
               onFolderDetails={(folder) => ScreenshotOrganizerStore.getFolderDetails(folder)}

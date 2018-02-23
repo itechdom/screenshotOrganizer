@@ -88,6 +88,9 @@ export class ScreenshotOrganizer {
           this.folderList.push(new Folder(folderTitle,album))
         });
       }),
+      deleteFolder:action((folderTitle)=>{
+        //delete folder
+      }),
       addScreenshotListToFolder:action((folderTitle)=>{
         let selectedFolder = this.folderList.find((f)=>{
           return folderTitle === f.title;
