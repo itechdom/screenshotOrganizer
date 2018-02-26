@@ -172,6 +172,7 @@ export class Screenshot{
   selected = false;
   asset;
   deleted;
+  folder;
   constructor(photo,selected,asset){
     this.asset = asset;
     this.deleted = false;
